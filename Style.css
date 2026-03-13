@@ -1,0 +1,196 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #050607;
+  color: #f5f5f5;
+  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100%;
+}
+
+body {
+  padding: 18px 12px 40px;
+}
+
+.topbar {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.topbar h1 {
+  margin: 0 0 6px;
+  font-size: 2rem;
+  line-height: 1.1;
+}
+
+.topbar p {
+  margin: 0;
+  color: #b7bcc7;
+  font-size: 0.95rem;
+}
+
+.app-shell {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.controls-card,
+.code-card {
+  background: #11151b;
+  border: 1px solid #2a313d;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 18px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+}
+
+.controls-card label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+textarea {
+  width: 100%;
+  border: 1px solid #323a46;
+  border-radius: 12px;
+  background: #090c10;
+  color: #f3f3f3;
+  padding: 12px;
+  resize: vertical;
+  min-height: 110px;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+button {
+  appearance: none;
+  border: 0;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  background: #7c3aed;
+  color: white;
+}
+
+button:hover {
+  opacity: 0.92;
+}
+
+.tip {
+  margin: 12px 0 0;
+  color: #b5bac4;
+  font-size: 0.9rem;
+}
+
+.player-stage {
+  margin-bottom: 18px;
+}
+
+.boombox-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.boombox {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  aspect-ratio: 1000 / 620;
+  margin: 0 auto;
+}
+
+.boombox img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+
+*/
+.tuner-window {
+  position: absolute;
+  left: 13.2%;
+  top: 30.4%;
+  width: 73.1%;
+  height: 11.6%;
+  overflow: hidden;
+  border-radius: 0.5vw;
+  background: #000;
+}
+
+.tuner-window iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: transparent;
+}
+
+.code-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.code-label-row span {
+  font-weight: 700;
+}
+
+#outputCode {
+  min-height: 160px;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 12px 10px 28px;
+  }
+
+  .topbar h1 {
+    font-size: 1.6rem;
+  }
+
+  .controls-card,
+  .code-card {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .tuner-window {
+    border-radius: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .topbar h1 {
+    font-size: 1.35rem;
+  }
+
+  .topbar p {
+    font-size: 0.88rem;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  textarea {
+    font-size: 0.9rem;
+  }
+}
