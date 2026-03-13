@@ -1,9 +1,13 @@
+
 # Playlist Skins 3.0
+
+A customizable boombox-style music player that lets playlists, radio streams,
+and social media embeds appear inside vintage stereo skins.
+
 Boombox Music Player Platform
 
-Developer Guide for the Boombox Playlist App
+Developer Guide for the Boombox Playlist App  
 Project Owner: Elliott Palmer
-
 ---
 
 ## Project Overview
