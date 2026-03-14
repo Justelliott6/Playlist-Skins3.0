@@ -71,7 +71,8 @@
       color: #d0d0d0;
     }
 
-    input[type="text"] {
+    input[type="text"],
+    select {
       width: 100%;
       padding: 10px 12px;
       border-radius: 8px;
@@ -148,6 +149,10 @@
       border-radius: 8px;
       background: #000;
       pointer-events: auto;
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.06),
+        inset 0 10px 16px rgba(255,255,255,0.05),
+        inset 0 -12px 20px rgba(0,0,0,0.55);
     }
 
     .boombox-iframe-slot iframe {
@@ -156,6 +161,57 @@
       border: 0;
       background: transparent;
       display: block;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tuner-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      border-radius: 8px;
+      background:
+        linear-gradient(to bottom,
+          rgba(255,255,255,0.16) 0%,
+          rgba(255,255,255,0.06) 12%,
+          rgba(255,255,255,0.02) 24%,
+          rgba(0,0,0,0.00) 40%,
+          rgba(0,0,0,0.10) 65%,
+          rgba(0,0,0,0.26) 100%);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.12),
+        inset 0 -1px 0 rgba(0,0,0,0.5);
+    }
+
+    .tuner-overlay::before {
+      content: "";
+      position: absolute;
+      left: 2.5%;
+      top: 14%;
+      width: 95%;
+      height: 22%;
+      border-radius: 999px;
+      background: linear-gradient(to right,
+        rgba(255,255,255,0.00),
+        rgba(255,255,255,0.18),
+        rgba(255,255,255,0.00));
+      opacity: 0.85;
+    }
+
+    .tuner-overlay::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 8px;
+      box-shadow:
+        inset 0 0 20px rgba(0,0,0,0.22),
+        inset 0 0 35px rgba(0,0,0,0.18);
+    }
+
+    .debug-outline {
+      outline: 2px dashed rgba(255, 0, 0, 0.8);
+      outline-offset: -2px;
     }
 
     textarea {
@@ -194,7 +250,23 @@
       color: #02140c;
     }
 
-    @media (max-width: 640px) {
+    .status-line {
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: #c9ced8;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 700px) {
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+
       header h1 {
         font-size: 1.5rem;
       }
@@ -204,11 +276,14 @@
       }
 
       .skin-buttons button,
-      #applyBtn {
+      #applyBtn,
+      #toggleDebugBtn {
         width: 100%;
       }
 
-      .boombox-iframe-slot {
+      .boombox-iframe-slot,
+      .tuner-overlay,
+      .tuner-overlay::after {
         border-radius: 5px;
       }
     }
@@ -222,15 +297,31 @@
 
   <main>
     <section class="panel">
-      <h2>1. Drop your Spotify playlist</h2>
-      <label for="playlistUrl">Spotify playlist URL</label>
-      <input
-        id="playlistUrl"
-        type="text"
-        placeholder="https://open.spotify.com/playlist/2MmIJTeFeehQ3uo1PFydLh"
-      />
+      <h2>1. Drop your playlist or media link</h2>
+
+      <div class="two-col">
+        <div>
+          <label for="platformType">Platform</label>
+          <select id="platformType">
+            <option value="spotify">Spotify</option>
+            <option value="soundcloud">SoundCloud</option>
+            <option value="youtube">YouTube</option>
+            <option value="custom">Custom embed URL</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="playlistUrl">Media URL</label>
+          <input
+            id="playlistUrl"
+            type="text"
+            placeholder="Paste Spotify, SoundCloud, YouTube, or embed URL"
+          />
+        </div>
+      </div>
 
       <button id="applyBtn" type="button">Apply to boombox</button>
+      <button id="toggleDebugBtn" type="button">Toggle tuner outline</button>
 
       <div class="skin-buttons">
         <button type="button" id="boomBoxBtn">BoomBox Skin</button>
@@ -238,18 +329,21 @@
       </div>
 
       <div class="hint">
-        This version uses one file only. No outside CSS. No outside JS. No more repo spaghetti monster.
+        Exact files in use: <strong>BoomBox.png</strong> and <strong>PurpleRabbit(3).png</strong>
       </div>
+
+      <div class="status-line" id="statusLine">Ready.</div>
     </section>
 
     <section class="panel">
       <h2>2. Preview your skin</h2>
+
       <div class="preview-wrapper">
         <div class="boombox-shell">
           <img
             id="boomboxImage"
             src="./BoomBox.png"
-            alt="Playlist Skins Boombox"
+            alt="BoomBox"
           />
 
           <div class="boombox-iframe-slot" id="iframeSlot">
@@ -259,6 +353,7 @@
               allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"
               loading="lazy"
             ></iframe>
+            <div class="tuner-overlay"></div>
           </div>
         </div>
 
@@ -282,6 +377,7 @@
 
   <script>
     const input = document.getElementById("playlistUrl");
+    const platformType = document.getElementById("platformType");
     const iframe = document.getElementById("playlistFrame");
     const output = document.getElementById("outputCode");
     const applyBtn = document.getElementById("applyBtn");
@@ -291,31 +387,37 @@
     const purpleRabbitBtn = document.getElementById("purpleRabbitBtn");
     const iframeSlot = document.getElementById("iframeSlot");
     const skinHint = document.getElementById("skinHint");
+    const statusLine = document.getElementById("statusLine");
+    const toggleDebugBtn = document.getElementById("toggleDebugBtn");
 
-    const defaultPlaylist = "https://open.spotify.com/playlist/2MmIJTeFeehQ3uo1PFydLh";
+    const defaultSpotify = "https://open.spotify.com/playlist/2MmIJTeFeehQ3uo1PFydLh";
+    let currentSkin = "boombox";
+    let debugOn = false;
 
     const skins = {
       boombox: {
         image: "./BoomBox.png",
         label: "BoomBox.png",
-        top: "11.2%",
-        left: "11.4%",
-        width: "77.3%",
-        height: "8.8%"
+        top: "12.4%",
+        left: "14.8%",
+        width: "70.8%",
+        height: "9.5%"
       },
       purpleRabbit: {
-        image: "./PurpleRabbit%20(3).png",
-        label: "PurpleRabbit (3).png",
-        top: "13.2%",
-        left: "15.7%",
-        width: "69.0%",
-        height: "9.2%"
+        image: "./PurpleRabbit(3).png",
+        label: "PurpleRabbit(3).png",
+        top: "13.0%",
+        left: "15.4%",
+        width: "69.8%",
+        height: "9.0%"
       }
     };
 
-    let currentSkin = "boombox";
+    function setStatus(text) {
+      statusLine.textContent = text;
+    }
 
-    function toEmbedUrl(rawUrl) {
+    function toSpotifyEmbed(rawUrl) {
       if (!rawUrl) return "";
       let url = rawUrl.trim();
 
@@ -332,20 +434,44 @@
       return url + "?utm_source=generator";
     }
 
-    function applySkin(name) {
-      const skin = skins[name];
-      if (!skin) return;
+    function toYouTubeEmbed(rawUrl) {
+      if (!rawUrl) return "";
+      let url = rawUrl.trim();
 
-      currentSkin = name;
-      boomboxImage.src = skin.image;
-      boomboxImage.alt = skin.label;
-      iframeSlot.style.top = skin.top;
-      iframeSlot.style.left = skin.left;
-      iframeSlot.style.width = skin.width;
-      iframeSlot.style.height = skin.height;
-      skinHint.textContent = "Current skin: " + skin.label;
+      if (url.includes("youtube.com/embed/")) return url;
 
-      output.value = buildEmbedCode(iframe.src);
+      if (url.includes("youtu.be/")) {
+        const id = url.split("youtu.be/")[1].split("?")[0];
+        return "https://www.youtube.com/embed/" + id;
+      }
+
+      if (url.includes("youtube.com/watch?v=")) {
+        const id = url.split("watch?v=")[1].split("&")[0];
+        return "https://www.youtube.com/embed/" + id;
+      }
+
+      return "";
+    }
+
+    function toSoundCloudEmbed(rawUrl) {
+      if (!rawUrl) return "";
+      let url = rawUrl.trim();
+
+      if (url.includes("w.soundcloud.com/player/")) return url;
+
+      if (url.includes("soundcloud.com/")) {
+        return "https://w.soundcloud.com/player/?url=" + encodeURIComponent(url);
+      }
+
+      return "";
+    }
+
+    function toEmbedUrl(rawUrl, platform) {
+      if (platform === "spotify") return toSpotifyEmbed(rawUrl);
+      if (platform === "youtube") return toYouTubeEmbed(rawUrl);
+      if (platform === "soundcloud") return toSoundCloudEmbed(rawUrl);
+      if (platform === "custom") return rawUrl.trim();
+      return "";
     }
 
     function buildEmbedCode(embedUrl) {
@@ -373,6 +499,10 @@
     overflow:hidden;
     border-radius:8px;
     background:#000;
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,0.06),
+      inset 0 10px 16px rgba(255,255,255,0.05),
+      inset 0 -12px 20px rgba(0,0,0,0.55);
   ">
     <iframe
       src="${embedUrl}"
@@ -381,23 +511,72 @@
       frameborder="0"
       allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"
       loading="lazy"
-      style="background:transparent;border:0;display:block;"
+      style="background:transparent;border:0;display:block;position:relative;z-index:1;"
     ></iframe>
+    <div style="
+      position:absolute;
+      inset:0;
+      z-index:2;
+      pointer-events:none;
+      border-radius:8px;
+      background:
+        linear-gradient(to bottom,
+          rgba(255,255,255,0.16) 0%,
+          rgba(255,255,255,0.06) 12%,
+          rgba(255,255,255,0.02) 24%,
+          rgba(0,0,0,0.00) 40%,
+          rgba(0,0,0,0.10) 65%,
+          rgba(0,0,0,0.26) 100%);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.12),
+        inset 0 -1px 0 rgba(0,0,0,0.5),
+        inset 0 0 20px rgba(0,0,0,0.22),
+        inset 0 0 35px rgba(0,0,0,0.18);
+    "></div>
   </div>
 </div>`;
     }
 
+    function applySkin(name) {
+      const skin = skins[name];
+      if (!skin) return;
+
+      currentSkin = name;
+      boomboxImage.src = skin.image;
+      boomboxImage.alt = skin.label;
+
+      iframeSlot.style.top = skin.top;
+      iframeSlot.style.left = skin.left;
+      iframeSlot.style.width = skin.width;
+      iframeSlot.style.height = skin.height;
+
+      skinHint.textContent = "Current skin: " + skin.label;
+      output.value = buildEmbedCode(iframe.src);
+
+      setStatus("Skin loaded: " + skin.label);
+    }
+
     function applyPlaylist() {
-      const raw = input.value || defaultPlaylist;
-      const embedUrl = toEmbedUrl(raw);
+      const raw = input.value.trim();
+      const platform = platformType.value;
+      const source = raw || defaultSpotify;
+      const embedUrl = toEmbedUrl(source, platform);
 
       if (!embedUrl) {
-        alert("That does not look like a valid Spotify URL.");
+        alert("That link does not match the selected platform.");
+        setStatus("Bad link for " + platform + ".");
         return;
       }
 
       iframe.src = embedUrl;
       output.value = buildEmbedCode(embedUrl);
+      setStatus("Embed loaded for " + platform + ".");
+    }
+
+    function toggleDebug() {
+      debugOn = !debugOn;
+      iframeSlot.classList.toggle("debug-outline", debugOn);
+      setStatus(debugOn ? "Tuner outline on." : "Tuner outline off.");
     }
 
     applyBtn.addEventListener("click", applyPlaylist);
@@ -413,10 +592,17 @@
     copyBtn.addEventListener("click", function () {
       output.select();
       document.execCommand("copy");
+      setStatus("Code copied.");
       alert("Code copied.");
     });
 
-    input.value = defaultPlaylist;
+    toggleDebugBtn.addEventListener("click", toggleDebug);
+
+    platformType.addEventListener("change", function () {
+      setStatus("Platform set to " + platformType.value + ".");
+    });
+
+    input.value = defaultSpotify;
     applySkin("boombox");
     applyPlaylist();
   </script>
