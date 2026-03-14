@@ -5,6 +5,10 @@
   <title>Playlist Skins – Boombox Generator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       padding: 0;
@@ -69,12 +73,12 @@
 
     input[type="text"] {
       width: 100%;
-      padding: 9px 11px;
+      padding: 10px 12px;
       border-radius: 8px;
       border: 1px solid #343842;
       background: #07080b;
       color: #f4f4f4;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       box-sizing: border-box;
     }
 
@@ -84,12 +88,12 @@
 
     button {
       margin-top: 10px;
-      padding: 9px 18px;
+      padding: 10px 18px;
       border-radius: 999px;
       border: none;
       background: #ffd82b;
       color: #201400;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 0.9rem;
       cursor: pointer;
       text-transform: uppercase;
@@ -108,10 +112,10 @@
     }
 
     .hint {
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       color: #9095a3;
-      margin-top: 6px;
-      line-height: 1.4;
+      margin-top: 8px;
+      line-height: 1.45;
     }
 
     .preview-wrapper {
@@ -140,14 +144,10 @@
 
     .boombox-iframe-slot {
       position: absolute;
-      top: 13.8%;
-      left: 15.5%;
-      width: 69.5%;
-      height: 10.8%;
       overflow: hidden;
       border-radius: 8px;
-      pointer-events: auto;
       background: #000;
+      pointer-events: auto;
     }
 
     .boombox-iframe-slot iframe {
@@ -155,11 +155,12 @@
       height: 100%;
       border: 0;
       background: transparent;
+      display: block;
     }
 
     textarea {
       width: 100%;
-      min-height: 180px;
+      min-height: 220px;
       resize: vertical;
       background: #050608;
       color: #f4f4f4;
@@ -206,6 +207,10 @@
       #applyBtn {
         width: 100%;
       }
+
+      .boombox-iframe-slot {
+        border-radius: 5px;
+      }
     }
   </style>
 </head>
@@ -224,7 +229,8 @@
         type="text"
         placeholder="https://open.spotify.com/playlist/2MmIJTeFeehQ3uo1PFydLh"
       />
-      <button id="applyBtn">Apply to boombox</button>
+
+      <button id="applyBtn" type="button">Apply to boombox</button>
 
       <div class="skin-buttons">
         <button type="button" id="boomBoxBtn">BoomBox Skin</button>
@@ -232,7 +238,7 @@
       </div>
 
       <div class="hint">
-        Paste a normal Spotify playlist link. The app will turn it into an embed URL automatically.
+        This version uses one file only. No outside CSS. No outside JS. No more repo spaghetti monster.
       </div>
     </section>
 
@@ -242,7 +248,7 @@
         <div class="boombox-shell">
           <img
             id="boomboxImage"
-            src="BoomBox.png"
+            src="./BoomBox.png"
             alt="Playlist Skins Boombox"
           />
 
@@ -256,9 +262,8 @@
           </div>
         </div>
 
-        <div class="hint">
-          This version uses your repo image files directly:
-          <strong>BoomBox.png</strong> and <strong>PurpleRabbit.png</strong>.
+        <div class="hint" id="skinHint">
+          Current skin: BoomBox.png
         </div>
       </div>
     </section>
@@ -266,61 +271,65 @@
     <section class="panel">
       <div class="code-label-row">
         <span>3. Copy this HTML widget to use on your site</span>
-        <button class="copy-btn" id="copyBtn">Copy code</button>
+        <button class="copy-btn" id="copyBtn" type="button">Copy code</button>
       </div>
       <textarea id="outputCode" readonly></textarea>
       <div class="hint">
-        Paste this into any site that allows custom HTML, like Webador or WordPress.
+        Paste this into Webador, WordPress, or anywhere that allows HTML.
       </div>
     </section>
   </main>
 
   <script>
-    const input = document.getElementById('playlistUrl');
-    const iframe = document.getElementById('playlistFrame');
-    const output = document.getElementById('outputCode');
-    const applyBtn = document.getElementById('applyBtn');
-    const copyBtn = document.getElementById('copyBtn');
-    const boomboxImage = document.getElementById('boomboxImage');
-    const boomBoxBtn = document.getElementById('boomBoxBtn');
-    const purpleRabbitBtn = document.getElementById('purpleRabbitBtn');
+    const input = document.getElementById("playlistUrl");
+    const iframe = document.getElementById("playlistFrame");
+    const output = document.getElementById("outputCode");
+    const applyBtn = document.getElementById("applyBtn");
+    const copyBtn = document.getElementById("copyBtn");
+    const boomboxImage = document.getElementById("boomboxImage");
+    const boomBoxBtn = document.getElementById("boomBoxBtn");
+    const purpleRabbitBtn = document.getElementById("purpleRabbitBtn");
+    const iframeSlot = document.getElementById("iframeSlot");
+    const skinHint = document.getElementById("skinHint");
 
-    const defaultPlaylist = 'https://open.spotify.com/playlist/2MmIJTeFeehQ3uo1PFydLh';
+    const defaultPlaylist = "https://open.spotify.com/playlist/2MmIJTeFeehQ3uo1PFydLh";
 
     const skins = {
       boombox: {
-        image: 'BoomBox.png',
-        top: '13.8%',
-        left: '15.5%',
-        width: '69.5%',
-        height: '10.8%'
+        image: "./BoomBox.png",
+        label: "BoomBox.png",
+        top: "11.2%",
+        left: "11.4%",
+        width: "77.3%",
+        height: "8.8%"
       },
       purpleRabbit: {
-        image: 'PurpleRabbit.png',
-        top: '13.8%',
-        left: '15.5%',
-        width: '69.5%',
-        height: '10.8%'
+        image: "./PurpleRabbit%20(3).png",
+        label: "PurpleRabbit (3).png",
+        top: "13.2%",
+        left: "15.7%",
+        width: "69.0%",
+        height: "9.2%"
       }
     };
 
-    let currentSkin = 'boombox';
+    let currentSkin = "boombox";
 
     function toEmbedUrl(rawUrl) {
-      if (!rawUrl) return '';
+      if (!rawUrl) return "";
       let url = rawUrl.trim();
 
-      url = url.replace('open.spotify.com/playlist/', 'open.spotify.com/embed/playlist/');
-      url = url.replace('open.spotify.com/album/', 'open.spotify.com/embed/album/');
-      url = url.replace('open.spotify.com/track/', 'open.spotify.com/embed/track/');
+      url = url.replace("open.spotify.com/playlist/", "open.spotify.com/embed/playlist/");
+      url = url.replace("open.spotify.com/album/", "open.spotify.com/embed/album/");
+      url = url.replace("open.spotify.com/track/", "open.spotify.com/embed/track/");
 
-      const qIndex = url.indexOf('?');
+      const qIndex = url.indexOf("?");
       if (qIndex !== -1) {
         url = url.substring(0, qIndex);
       }
 
-      if (!url.includes('/embed/')) return '';
-      return url + '?utm_source=generator';
+      if (!url.includes("/embed/")) return "";
+      return url + "?utm_source=generator";
     }
 
     function applySkin(name) {
@@ -329,12 +338,12 @@
 
       currentSkin = name;
       boomboxImage.src = skin.image;
-
-      const slot = document.getElementById('iframeSlot');
-      slot.style.top = skin.top;
-      slot.style.left = skin.left;
-      slot.style.width = skin.width;
-      slot.style.height = skin.height;
+      boomboxImage.alt = skin.label;
+      iframeSlot.style.top = skin.top;
+      iframeSlot.style.left = skin.left;
+      iframeSlot.style.width = skin.width;
+      iframeSlot.style.height = skin.height;
+      skinHint.textContent = "Current skin: " + skin.label;
 
       output.value = buildEmbedCode(iframe.src);
     }
@@ -352,7 +361,7 @@
 ">
   <img
     src="${skin.image}"
-    alt="Playlist Skins Boombox"
+    alt="${skin.label}"
     style="display:block;width:100%;height:100%;object-fit:contain;border-radius:12px;"
   />
   <div style="
@@ -372,7 +381,7 @@
       frameborder="0"
       allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"
       loading="lazy"
-      style="background:transparent;border:0;"
+      style="background:transparent;border:0;display:block;"
     ></iframe>
   </div>
 </div>`;
@@ -383,7 +392,7 @@
       const embedUrl = toEmbedUrl(raw);
 
       if (!embedUrl) {
-        alert('That does not look like a valid Spotify URL.');
+        alert("That does not look like a valid Spotify URL.");
         return;
       }
 
@@ -391,29 +400,25 @@
       output.value = buildEmbedCode(embedUrl);
     }
 
-    function init() {
-      input.value = defaultPlaylist;
-      applySkin('boombox');
-      applyPlaylist();
-    }
+    applyBtn.addEventListener("click", applyPlaylist);
 
-    applyBtn.addEventListener('click', applyPlaylist);
-
-    boomBoxBtn.addEventListener('click', () => {
-      applySkin('boombox');
+    boomBoxBtn.addEventListener("click", function () {
+      applySkin("boombox");
     });
 
-    purpleRabbitBtn.addEventListener('click', () => {
-      applySkin('purpleRabbit');
+    purpleRabbitBtn.addEventListener("click", function () {
+      applySkin("purpleRabbit");
     });
 
-    copyBtn.addEventListener('click', () => {
+    copyBtn.addEventListener("click", function () {
       output.select();
-      document.execCommand('copy');
-      alert('Code copied.');
+      document.execCommand("copy");
+      alert("Code copied.");
     });
 
-    init();
+    input.value = defaultPlaylist;
+    applySkin("boombox");
+    applyPlaylist();
   </script>
 </body>
 </html>
