@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Playlist Skins - Skin Editor</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b0b0f;
+      color: #fff;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-top: 0;
+      text-align: center;
+      color: #ffd84d;
+    }
+
+    .wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+      background: #16161d;
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .controls label {
+      font-size: 14px;
+      color: #ddd;
+    }
+
+    .controls input[type="file"],
+    .controls input[type="range"],
+    .controls input[type="text"] {
+      background: #22242c;
+      color: #fff;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    .controls button {
+      background: #ffd84d;
+      color: #111;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .controls button:hover {
+      opacity: 0.92;
+    }
+
+    .editor-shell {
+      display: flex;
+      justify-content: center;
+    }
+
+    .canvas-wrap {
+      position: relative;
+      width: min(100%, 1600px);
+      aspect-ratio: 1600 / 900;
+      background: #111;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 0 25px rgba(0,0,0,0.45);
+      border: 1px solid #2d2d36;
+      touch-action: none;
+    }
+
+    #skinImage {
+      position: absolute;
+      left: 0;
+      top: 0;
+      transform-origin: top left;
+      user-select: none;
+      -webkit-user-drag: none;
+      cursor: grab;
+      max-width: none;
+    }
+
+    #skinImage.dragging {
+      cursor: grabbing;
+    }
+
+    .slot-overlay {
+      position: absolute;
+      left: 20%;
+      top: 13.3333%;
+      width: 60%;
+      height: 24.4444%;
+      border: 4px dashed #00ff66;
+      border-radius: 18px;
+      background: rgba(0, 255, 102, 0.08);
+      pointer-events: none;
+    }
+
+    .slot-label {
+      position: absolute;
+      left: 20%;
+      top: calc(13.3333% - 34px);
+      background: rgba(0, 255, 102, 0.18);
+      color: #9dffbf;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 13px;
+      pointer-events: none;
+    }
+
+    .readout {
+      margin-top: 18px;
+      background: #16161d;
+      border-radius: 14px;
+      padding: 16px;
+      line-height: 1.6;
+      color: #ddd;
+      white-space: pre-wrap;
+    }
+
+    .tip {
+      text-align: center;
+      color: #aaa;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 900px) {
+      .controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .controls > * {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Playlist Skins - Skin Editor</h1>
+
+    <div class="controls">
+      <input type="file" id="uploadImage" accept="image/*" />
+
+      <label>
+        Scale
+        <input type="range" id="scaleRange" min="10" max="250" value="100" />
+      </label>
+
+      <input type="text" id="skinName" placeholder="Skin name e.g. Rock101-Boombox" />
+
+      <button id="resetBtn">Reset Position</button>
+      <button id="toggleSlotBtn">Hide Slot</button>
+      <button id="saveDataBtn">Copy Position Data</button>
+      <button id="exportBtn">Export PNG</button>
+    </div>
+
+    <div class="editor-shell">
+      <div class="canvas-wrap" id="editorCanvas">
+        <img id="skinImage" class="hidden" alt="Skin artwork" />
+        <div class="slot-label" id="slotLabel">MEDIA SLOT 960 × 220</div>
+        <div class="slot-overlay" id="slotOverlay"></div>
+      </div>
+    </div>
+
+    <div class="tip">
+      Upload image → drag to place → use scale slider → export PNG
+    </div>
+
+    <div class="readout" id="readout">No image loaded yet.</div>
+  </div>
+
+  <script>
+    const uploadImage = document.getElementById("uploadImage");
+    const skinImage = document.getElementById("skinImage");
+    const scaleRange = document.getElementById("scaleRange");
+    const resetBtn = document.getElementById("resetBtn");
+    const toggleSlotBtn = document.getElementById("toggleSlotBtn");
+    const saveDataBtn = document.getElementById("saveDataBtn");
+    const exportBtn = document.getElementById("exportBtn");
+    const readout = document.getElementById("readout");
+    const editorCanvas = document.getElementById("editorCanvas");
+    const slotOverlay = document.getElementById("slotOverlay");
+    const slotLabel = document.getElementById("slotLabel");
+    const skinName = document.getElementById("skinName");
+
+    let posX = 0;
+    let posY = 0;
+    let scale = 1;
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+    let loaded = false;
+    let slotVisible = true;
+
+    const templateWidth = 1600;
+    const templateHeight = 900;
+
+    function updateImageTransform() {
+      skinImage.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+      updateReadout();
+    }
+
+    function updateReadout() {
+      if (!loaded) {
+        readout.textContent = "No image loaded yet.";
+        return;
+      }
+
+      const data = {
+        skinName: skinName.value || "unnamed-skin",
+        imageX: Math.round(posX),
+        imageY: Math.round(posY),
+        imageScale: Number(scale.toFixed(3)),
+        canvasWidth: templateWidth,
+        canvasHeight: templateHeight,
+        slotX: 320,
+        slotY: 120,
+        slotWidth: 960,
+        slotHeight: 220
+      };
+
+      readout.textContent = JSON.stringify(data, null, 2);
+    }
+
+    uploadImage.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        skinImage.src = evt.target.result;
+        skinImage.onload = function() {
+          loaded = true;
+          skinImage.classList.remove("hidden");
+          posX = 0;
+          posY = 0;
+          scale = 1;
+          scaleRange.value = 100;
+          updateImageTransform();
+        };
+      };
+      reader.readAsDataURL(file);
+    });
+
+    scaleRange.addEventListener("input", () => {
+      scale = Number(scaleRange.value) / 100;
+      updateImageTransform();
+    });
+
+    resetBtn.addEventListener("click", () => {
+      posX = 0;
+      posY = 0;
+      scale = 1;
+      scaleRange.value = 100;
+      updateImageTransform();
+    });
+
+    toggleSlotBtn.addEventListener("click", () => {
+      slotVisible = !slotVisible;
+      slotOverlay.style.display = slotVisible ? "block" : "none";
+      slotLabel.style.display = slotVisible ? "block" : "none";
+      toggleSlotBtn.textContent = slotVisible ? "Hide Slot" : "Show Slot";
+    });
+
+    saveDataBtn.addEventListener("click", async () => {
+      if (!loaded) return;
+      const text = readout.textContent;
+      try {
+        await navigator.clipboard.writeText(text);
+        saveDataBtn.textContent = "Copied";
+        setTimeout(() => {
+          saveDataBtn.textContent = "Copy Position Data";
+        }, 1200);
+      } catch {
+        alert("Could not copy. Select and copy the text manually.");
+      }
+    });
+
+    exportBtn.addEventListener("click", () => {
+      if (!loaded) {
+        alert("Upload an image first.");
+        return;
+      }
+
+      const exportCanvas = document.createElement("canvas");
+      exportCanvas.width = templateWidth;
+      exportCanvas.height = templateHeight;
+      const ctx = exportCanvas.getContext("2d");
+
+      const img = new Image();
+      img.onload = function() {
+        const drawWidth = img.width * scale;
+        const drawHeight = img.height * scale;
+        ctx.clearRect(0, 0, templateWidth, templateHeight);
+        ctx.drawImage(img, posX, posY, drawWidth, drawHeight);
+
+        const link = document.createElement("a");
+        const fileBase = (skinName.value || "playlist-skin").trim();
+        link.download = `${fileBase}.png`;
+        link.href = exportCanvas.toDataURL("image/png");
+        link.click();
+      };
+      img.src = skinImage.src;
+    });
+
+    function getPoint(event) {
+      if (event.touches && event.touches.length > 0) {
+        return { x: event.touches[0].clientX, y: event.touches[0].clientY };
+      }
+      return { x: event.clientX, y: event.clientY };
+    }
+
+    function startDrag(event) {
+      if (!loaded) return;
+      event.preventDefault();
+      isDragging = true;
+      skinImage.classList.add("dragging");
+      const point = getPoint(event);
+      startX = point.x - posX;
+      startY = point.y - posY;
+    }
+
+    function dragImage(event) {
+      if (!isDragging || !loaded) return;
+      event.preventDefault();
+      const point = getPoint(event);
+      posX = point.x - startX;
+      posY = point.y - startY;
+      updateImageTransform();
+    }
+
+    function endDrag() {
+      isDragging = false;
+      skinImage.classList.remove("dragging");
+    }
+
+    skinImage.addEventListener("mousedown", startDrag);
+    window.addEventListener("mousemove", dragImage);
+    window.addEventListener("mouseup", endDrag);
+
+    skinImage.addEventListener("touchstart", startDrag, { passive: false });
+    window.addEventListener("touchmove", dragImage, { passive: false });
+    window.addEventListener("touchend", endDrag);
+
+    skinName.addEventListener("input", updateReadout);
+  </script>
+</body>
+</html>
