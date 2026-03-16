@@ -85,7 +85,8 @@
       font-size: 0.95rem;
     }
 
-    button {
+    button,
+    .editor-link {
       margin-top: 10px;
       padding: 10px 18px;
       border-radius: 999px;
@@ -97,9 +98,15 @@
       cursor: pointer;
       text-transform: uppercase;
       letter-spacing: 0.11em;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
     }
 
-    button:hover {
+    button:hover,
+    .editor-link:hover {
       filter: brightness(1.05);
     }
 
@@ -224,7 +231,8 @@
         flex-direction: column;
       }
 
-      .button-row button {
+      .button-row button,
+      .button-row .editor-link {
         width: 100%;
       }
     }
@@ -234,7 +242,7 @@
 
   <header>
     <h1>Playlist Skins</h1>
-    <p>Turn any Spotify playlist into a retro boombox skin.</p>
+    <p>Turn any media link into a retro boombox skin.</p>
   </header>
 
   <main>
@@ -267,6 +275,7 @@
         <button id="debugBtn" type="button">Toggle tuner outline</button>
         <button id="boomBoxBtn" type="button">BoomBox Skin</button>
         <button id="purpleRabbitBtn" type="button">Purple Rabbit Skin</button>
+        <a href="skin-editor.html" class="editor-link">Open Skin Editor</a>
       </div>
 
       <div class="hint">
