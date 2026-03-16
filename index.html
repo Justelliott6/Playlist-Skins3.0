@@ -1,534 +1,285 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Playlist Skins 3.0</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Playlist Skins 3.0</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
 
-    body {
-      margin: 0;
-      padding: 0;
-      background: #050607;
-      color: #f9f9f9;
-      font-family: Arial, Helvetica, sans-serif;
-    }
+body{
+margin:0;
+background:#050607;
+color:white;
+font-family:Arial;
+}
 
-    header {
-      text-align: center;
-      padding: 24px 12px 10px;
-    }
+header{
+text-align:center;
+padding:20px;
+}
 
-    header h1 {
-      margin: 0;
-      font-size: 2rem;
-      letter-spacing: 2px;
-      color: #ffd82b;
-      text-transform: uppercase;
-    }
+header h1{
+color:#ffd82b;
+letter-spacing:2px;
+}
 
-    header p {
-      margin: 8px 0 0;
-      color: #d3d3d3;
-      font-size: 0.95rem;
-    }
+.panel{
+background:#111317;
+border-radius:16px;
+padding:20px;
+margin:20px;
+}
 
-    main {
-      width: 100%;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 14px 40px;
-    }
+.button-row{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+}
 
-    .panel {
-      background: #111317;
-      border: 1px solid #262a32;
-      border-radius: 16px;
-      padding: 18px;
-      margin-bottom: 22px;
-      box-shadow: 0 14px 30px rgba(0,0,0,0.4);
-    }
+button{
+background:#ffd82b;
+border:none;
+padding:10px 18px;
+border-radius:30px;
+font-weight:bold;
+cursor:pointer;
+}
 
-    .panel h2 {
-      margin: 0 0 12px;
-      font-size: 1.05rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #9fb4ff;
-    }
+.boombox-shell{
+position:relative;
+max-width:900px;
+margin:auto;
+}
 
-    .two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
+.boombox-image{
+width:100%;
+}
 
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 0.9rem;
-      color: #d0d0d0;
-    }
+.boombox-screen{
+position:absolute;
+overflow:hidden;
+border-radius:0;
+}
 
-    input[type="text"],
-    select {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 8px;
-      border: 1px solid #343842;
-      background: #07080b;
-      color: #f4f4f4;
-      font-size: 0.95rem;
-    }
+.debug-outline{
+outline:2px dashed red;
+}
 
-    button,
-    .editor-link {
-      margin-top: 10px;
-      padding: 10px 18px;
-      border-radius: 999px;
-      border: none;
-      background: #ffd82b;
-      color: #201400;
-      font-weight: 700;
-      font-size: 0.9rem;
-      cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 0.11em;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 42px;
-    }
+iframe{
+width:100%;
+height:100%;
+border:0;
+}
 
-    button:hover,
-    .editor-link:hover {
-      filter: brightness(1.05);
-    }
+textarea{
+width:100%;
+min-height:200px;
+background:#050608;
+color:white;
+margin-top:10px;
+}
 
-    .button-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .hint {
-      font-size: 0.82rem;
-      color: #9095a3;
-      margin-top: 8px;
-      line-height: 1.45;
-    }
-
-    .status-line {
-      margin-top: 8px;
-      font-size: 0.88rem;
-      color: #c9ced8;
-    }
-
-    .boombox-shell {
-      position: relative;
-      width: 100%;
-      max-width: 900px;
-      margin: 0 auto;
-      border-radius: 18px;
-      overflow: hidden;
-      background: #000;
-    }
-
-    .boombox-image {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-
-    .boombox-screen {
-      position: absolute;
-      overflow: hidden;
-      border-radius: 8px;
-      background: linear-gradient(to bottom, rgba(25,25,25,0.9), rgba(0,0,0,0.96));
-      box-shadow:
-        inset 0 0 0 1px rgba(255,255,255,0.05),
-        inset 0 5px 10px rgba(255,255,255,0.04),
-        inset 0 -10px 14px rgba(0,0,0,0.7);
-    }
-
-    .boombox-screen iframe {
-      width: 100%;
-      height: 100%;
-      border: 0;
-      display: block;
-      position: relative;
-      z-index: 1;
-      background: transparent;
-    }
-
-    .boombox-screen::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 2;
-      background: linear-gradient(
-        to bottom,
-        rgba(255,255,255,0.05) 0%,
-        rgba(255,255,255,0.015) 18%,
-        rgba(0,0,0,0) 46%,
-        rgba(0,0,0,0.14) 100%
-      );
-    }
-
-    .debug-outline {
-      outline: 2px dashed rgba(255, 0, 0, 0.85);
-      outline-offset: -2px;
-    }
-
-    textarea {
-      width: 100%;
-      min-height: 220px;
-      resize: vertical;
-      background: #050608;
-      color: #f4f4f4;
-      border-radius: 10px;
-      border: 1px solid #343842;
-      padding: 10px 12px;
-      box-sizing: border-box;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
-      font-size: 0.8rem;
-      line-height: 1.5;
-    }
-
-    .code-label-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 6px;
-    }
-
-    .copy-btn {
-      margin: 0;
-      padding: 6px 12px;
-      font-size: 0.75rem;
-      background: #3cf29b;
-      color: #02140c;
-    }
-
-    @media (max-width: 700px) {
-      .two-col {
-        grid-template-columns: 1fr;
-      }
-
-      header h1 {
-        font-size: 1.55rem;
-      }
-
-      .button-row {
-        flex-direction: column;
-      }
-
-      .button-row button,
-      .button-row .editor-link {
-        width: 100%;
-      }
-    }
-  </style>
+</style>
 </head>
+
 <body>
 
-  <header>
-    <h1>Playlist Skins</h1>
-    <p>Turn any media link into a retro boombox skin.</p>
-  </header>
+<header>
+<h1>Playlist Skins</h1>
+<p>Turn any playlist into a retro music player skin</p>
+</header>
 
-  <main>
-    <section class="panel">
-      <h2>1. Drop your playlist or media link</h2>
+<section class="panel">
 
-      <div class="two-col">
-        <div>
-          <label for="platformType">Platform</label>
-          <select id="platformType">
-            <option value="spotify">Spotify</option>
-            <option value="soundcloud">SoundCloud</option>
-            <option value="youtube">YouTube</option>
-            <option value="custom">Custom embed URL</option>
-          </select>
-        </div>
+<h2>1. Media Link</h2>
 
-        <div>
-          <label for="mediaUrl">Media URL</label>
-          <input
-            id="mediaUrl"
-            type="text"
-            placeholder="Paste Spotify, SoundCloud, YouTube, or embed URL"
-          />
-        </div>
-      </div>
+<select id="platformType">
+<option value="spotify">Spotify</option>
+<option value="youtube">YouTube</option>
+<option value="soundcloud">SoundCloud</option>
+<option value="custom">Custom</option>
+</select>
 
-      <div class="button-row">
-        <button id="applyBtn" type="button">Apply to boombox</button>
-        <button id="debugBtn" type="button">Toggle tuner outline</button>
-        <button id="boomBoxBtn" type="button">BoomBox Skin</button>
-        <button id="purpleRabbitBtn" type="button">Purple Rabbit Skin</button>
-        <a href="skin-editor.html" class="editor-link">Open Skin Editor</a>
-      </div>
+<input id="mediaUrl" type="text" placeholder="Paste media link">
 
-      <div class="hint">
-        Exact files in use: <strong>BoomBox.png</strong> and <strong>PurpleRabbit(3).png</strong>
-      </div>
+<div class="button-row">
 
-      <div class="status-line" id="statusLine">Ready.</div>
-    </section>
+<button id="applyBtn">Apply</button>
 
-    <section class="panel">
-      <h2>2. Preview your skin</h2>
+<button id="debugBtn">Toggle Outline</button>
 
-      <div class="boombox-shell" id="boomboxShell">
-        <img id="boomboxImage" class="boombox-image" src="./BoomBox.png" alt="BoomBox.png" />
-        <div id="boomboxScreen" class="boombox-screen">
-          <iframe
-            id="mediaFrame"
-            src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M?utm_source=generator"
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-            loading="lazy">
-          </iframe>
-        </div>
-      </div>
+<button id="boomBoxBtn">BoomBox Skin</button>
 
-      <div class="hint" id="skinHint">Current skin: BoomBox.png</div>
-    </section>
+<button id="purpleRabbitBtn">Purple Rabbit Skin</button>
 
-    <section class="panel">
-      <div class="code-label-row">
-        <span>3. Copy this HTML widget to use on your site</span>
-        <button class="copy-btn" id="copyBtn" type="button">Copy code</button>
-      </div>
-      <textarea id="outputCode" readonly></textarea>
-      <div class="hint">
-        Paste this into Webador, WordPress, or anywhere that allows HTML.
-      </div>
-    </section>
-  </main>
+<button id="new101Btn">New101 Skin</button>
 
-  <script>
-    const mediaUrl = document.getElementById("mediaUrl");
-    const platformType = document.getElementById("platformType");
-    const boomboxImage = document.getElementById("boomboxImage");
-    const boomboxScreen = document.getElementById("boomboxScreen");
-    const mediaFrame = document.getElementById("mediaFrame");
-    const statusLine = document.getElementById("statusLine");
-    const skinHint = document.getElementById("skinHint");
-    const outputCode = document.getElementById("outputCode");
+<button onclick="window.location.href='skin-editor.html'">
+Skin Editor
+</button>
 
-    const skins = {
-      boombox: {
-        image: "./BoomBox.png",
-        label: "BoomBox.png",
-        pixels: {
-          left: 108,
-          right: 1201,
-          top: 201,
-          bottom: 301
-        }
-      },
-      purpleRabbit: {
-        image: "./PurpleRabbit(3).png",
-        label: "PurpleRabbit(3).png",
-        pixels: {
-          left: 204,
-          right: 1204,
-          top: 208,
-          bottom: 401
-        }
-      }
-    };
+</div>
 
-    let currentSkin = "boombox";
-    let debugOn = false;
+</section>
 
-    function setStatus(text) {
-      statusLine.textContent = text;
-    }
+<section class="panel">
 
-    function toSpotifyEmbed(rawUrl) {
-      if (!rawUrl) return "";
-      let url = rawUrl.trim();
-      url = url.replace("open.spotify.com/playlist/", "open.spotify.com/embed/playlist/");
-      url = url.replace("open.spotify.com/album/", "open.spotify.com/embed/album/");
-      url = url.replace("open.spotify.com/track/", "open.spotify.com/embed/track/");
-      const qIndex = url.indexOf("?");
-      if (qIndex !== -1) url = url.substring(0, qIndex);
-      if (!url.includes("/embed/")) return "";
-      return url + "?utm_source=generator";
-    }
+<h2>2. Preview</h2>
 
-    function toYouTubeEmbed(rawUrl) {
-      if (!rawUrl) return "";
-      let url = rawUrl.trim();
-      if (url.includes("youtube.com/embed/")) return url;
-      if (url.includes("youtu.be/")) {
-        const id = url.split("youtu.be/")[1].split("?")[0];
-        return "https://www.youtube.com/embed/" + id;
-      }
-      if (url.includes("youtube.com/watch?v=")) {
-        const id = url.split("watch?v=")[1].split("&")[0];
-        return "https://www.youtube.com/embed/" + id;
-      }
-      return "";
-    }
+<div class="boombox-shell">
 
-    function toSoundCloudEmbed(rawUrl) {
-      if (!rawUrl) return "";
-      const url = rawUrl.trim();
-      if (url.includes("w.soundcloud.com/player/")) return url;
-      if (url.includes("soundcloud.com/")) {
-        return "https://w.soundcloud.com/player/?url=" + encodeURIComponent(url);
-      }
-      return "";
-    }
+<img id="boomboxImage"
+class="boombox-image"
+src="./BoomBox.png">
 
-    function toEmbedUrl(rawUrl, platform) {
-      if (platform === "spotify") return toSpotifyEmbed(rawUrl);
-      if (platform === "youtube") return toYouTubeEmbed(rawUrl);
-      if (platform === "soundcloud") return toSoundCloudEmbed(rawUrl);
-      if (platform === "custom") return rawUrl.trim();
-      return "";
-    }
+<div id="boomboxScreen" class="boombox-screen">
 
-    function applyPixelBox() {
-      const skin = skins[currentSkin];
-      const naturalWidth = boomboxImage.naturalWidth;
-      const naturalHeight = boomboxImage.naturalHeight;
+<iframe id="mediaFrame"
+src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M">
+</iframe>
 
-      if (!naturalWidth || !naturalHeight) return;
+</div>
 
-      const left = (skin.pixels.left / naturalWidth) * 100;
-      const top = (skin.pixels.top / naturalHeight) * 100;
-      const width = ((skin.pixels.right - skin.pixels.left) / naturalWidth) * 100;
-      const height = ((skin.pixels.bottom - skin.pixels.top) / naturalHeight) * 100;
+</div>
 
-      boomboxScreen.style.left = left + "%";
-      boomboxScreen.style.top = top + "%";
-      boomboxScreen.style.width = width + "%";
-      boomboxScreen.style.height = height + "%";
-    }
+</section>
 
-    function buildEmbedCode(embedUrl) {
-      const skin = skins[currentSkin];
-      const naturalWidth = boomboxImage.naturalWidth;
-      const naturalHeight = boomboxImage.naturalHeight;
+<section class="panel">
 
-      const left = ((skin.pixels.left / naturalWidth) * 100).toFixed(3);
-      const top = ((skin.pixels.top / naturalHeight) * 100).toFixed(3);
-      const width = (((skin.pixels.right - skin.pixels.left) / naturalWidth) * 100).toFixed(3);
-      const height = (((skin.pixels.bottom - skin.pixels.top) / naturalHeight) * 100).toFixed(3);
+<h2>3. Copy Widget</h2>
 
-      return `<!-- Playlist Skins Boombox Widget -->
-<div style="
-  position:relative;
-  width:900px;
-  max-width:100%;
-  margin:40px auto;
-">
-  <img
-    src="${skin.image}"
-    alt="${skin.label}"
-    style="display:block;width:100%;height:auto;border-radius:12px;"
-  />
-  <div style="
-    position:absolute;
-    left:${left}%;
-    top:${top}%;
-    width:${width}%;
-    height:${height}%;
-    overflow:hidden;
-    border-radius:8px;
-    background:linear-gradient(to bottom, rgba(25,25,25,0.9), rgba(0,0,0,0.96));
-    box-shadow:
-      inset 0 0 0 1px rgba(255,255,255,0.05),
-      inset 0 5px 10px rgba(255,255,255,0.04),
-      inset 0 -10px 14px rgba(0,0,0,0.7);
-  ">
-    <iframe
-      src="${embedUrl}"
-      width="100%"
-      height="100%"
-      frameborder="0"
-      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-      loading="lazy"
-      style="border:0;display:block;background:transparent;"
-    ></iframe>
-  </div>
-</div>`;
-    }
+<button id="copyBtn">Copy Code</button>
 
-    function applySkin(name) {
-      currentSkin = name;
-      const skin = skins[name];
-      boomboxImage.src = skin.image;
-      boomboxImage.alt = skin.label;
-      skinHint.textContent = "Current skin: " + skin.label;
-      setStatus("Skin loaded: " + skin.label);
+<textarea id="outputCode"></textarea>
 
-      if (boomboxImage.complete) {
-        applyPixelBox();
-        outputCode.value = buildEmbedCode(mediaFrame.src);
-      }
-    }
+</section>
 
-    function applyMedia() {
-      const raw = mediaUrl.value.trim();
-      const platform = platformType.value;
-      const fallback = "https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M";
-      const embedUrl = toEmbedUrl(raw || fallback, platform);
+<script>
 
-      if (!embedUrl) {
-        alert("That link does not match the selected platform.");
-        setStatus("Bad link for " + platform + ".");
-        return;
-      }
+const mediaFrame = document.getElementById("mediaFrame")
+const boomboxImage = document.getElementById("boomboxImage")
+const boomboxScreen = document.getElementById("boomboxScreen")
+const mediaUrl = document.getElementById("mediaUrl")
 
-      mediaFrame.src = embedUrl;
-      outputCode.value = buildEmbedCode(embedUrl);
-      setStatus("Embed loaded for " + platform + ".");
-    }
+let debugOn=false
 
-    document.getElementById("applyBtn").addEventListener("click", applyMedia);
+const skins={
 
-    document.getElementById("boomBoxBtn").addEventListener("click", function () {
-      applySkin("boombox");
-    });
+boombox:{
+image:"./BoomBox.png",
+pixels:{left:108,right:1201,top:201,bottom:301}
+},
 
-    document.getElementById("purpleRabbitBtn").addEventListener("click", function () {
-      applySkin("purpleRabbit");
-    });
+purpleRabbit:{
+image:"./PurpleRabbit(3).png",
+pixels:{left:204,right:1204,top:208,bottom:401}
+},
 
-    document.getElementById("debugBtn").addEventListener("click", function () {
-      debugOn = !debugOn;
-      boomboxScreen.classList.toggle("debug-outline", debugOn);
-      setStatus(debugOn ? "Tuner outline on." : "Tuner outline off.");
-    });
+new101:{
+image:"./skins/New101.png",
+pixels:{left:320,right:1280,top:120,bottom:340}
+}
 
-    document.getElementById("copyBtn").addEventListener("click", function () {
-      outputCode.select();
-      document.execCommand("copy");
-      setStatus("Code copied.");
-      alert("Code copied.");
-    });
+}
 
-    boomboxImage.addEventListener("load", function () {
-      applyPixelBox();
-      outputCode.value = buildEmbedCode(mediaFrame.src);
-    });
+let currentSkin="boombox"
 
-    mediaUrl.value = "https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M";
-    applySkin("boombox");
-    applyMedia();
-  </script>
+function applyPixelBox(){
+
+const skin=skins[currentSkin]
+
+const naturalWidth=boomboxImage.naturalWidth
+const naturalHeight=boomboxImage.naturalHeight
+
+const left=(skin.pixels.left/naturalWidth)*100
+const top=(skin.pixels.top/naturalHeight)*100
+const width=((skin.pixels.right-skin.pixels.left)/naturalWidth)*100
+const height=((skin.pixels.bottom-skin.pixels.top)/naturalHeight)*100
+
+boomboxScreen.style.left=left+"%"
+boomboxScreen.style.top=top+"%"
+boomboxScreen.style.width=width+"%"
+boomboxScreen.style.height=height+"%"
+
+}
+
+function applySkin(name){
+
+currentSkin=name
+
+boomboxImage.src=skins[name].image
+
+}
+
+function toSpotify(url){
+
+url=url.replace(
+"open.spotify.com/playlist/",
+"open.spotify.com/embed/playlist/"
+)
+
+return url.split("?")[0]
+
+}
+
+function toYouTube(url){
+
+if(url.includes("watch?v=")){
+
+let id=url.split("watch?v=")[1].split("&")[0]
+
+return "https://www.youtube.com/embed/"+id
+
+}
+
+return url
+
+}
+
+function applyMedia(){
+
+let url=mediaUrl.value
+
+let platform=document.getElementById("platformType").value
+
+if(platform==="spotify") url=toSpotify(url)
+
+if(platform==="youtube") url=toYouTube(url)
+
+mediaFrame.src=url
+
+}
+
+document.getElementById("applyBtn").onclick=applyMedia
+
+document.getElementById("boomBoxBtn").onclick=()=>applySkin("boombox")
+
+document.getElementById("purpleRabbitBtn").onclick=()=>applySkin("purpleRabbit")
+
+document.getElementById("new101Btn").onclick=()=>applySkin("new101")
+
+document.getElementById("debugBtn").onclick=function(){
+
+debugOn=!debugOn
+
+boomboxScreen.classList.toggle("debug-outline")
+
+}
+
+document.getElementById("copyBtn").onclick=function(){
+
+let code=document.documentElement.outerHTML
+
+navigator.clipboard.writeText(code)
+
+alert("Code copied")
+
+}
+
+boomboxImage.onload=applyPixelBox
+
+</script>
+
 </body>
 </html>
