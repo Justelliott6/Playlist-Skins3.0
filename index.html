@@ -149,7 +149,7 @@
     .boombox-screen {
       position: absolute;
       overflow: hidden;
-      border-radius: 8px;
+      border-radius: 0;
       background: linear-gradient(to bottom, rgba(25,25,25,0.9), rgba(0,0,0,0.96));
       box-shadow:
         inset 0 0 0 1px rgba(255,255,255,0.05),
@@ -275,11 +275,12 @@
         <button id="debugBtn" type="button">Toggle tuner outline</button>
         <button id="boomBoxBtn" type="button">BoomBox Skin</button>
         <button id="purpleRabbitBtn" type="button">Purple Rabbit Skin</button>
+        <button id="new101Btn" type="button">New101 Skin</button>
         <a href="skin-editor.html" class="editor-link">Open Skin Editor</a>
       </div>
 
       <div class="hint">
-        Exact files in use: <strong>BoomBox.png</strong> and <strong>PurpleRabbit(3).png</strong>
+        Exact files in use: <strong>BoomBox.png</strong>, <strong>PurpleRabbit(3).png</strong>, and <strong>skins/New101.png</strong>
       </div>
 
       <div class="status-line" id="statusLine">Ready.</div>
@@ -330,8 +331,8 @@
         image: "./BoomBox.png",
         label: "BoomBox.png",
         pixels: {
-          left: 108,
-          right: 1201,
+          left: 113,
+          right: 1206,
           top: 201,
           bottom: 301
         }
@@ -344,6 +345,16 @@
           right: 1204,
           top: 208,
           bottom: 401
+        }
+      },
+      new101: {
+        image: "./skins/New101.png",
+        label: "New101.png",
+        pixels: {
+          left: 320,
+          right: 1280,
+          top: 120,
+          bottom: 340
         }
       }
     };
@@ -447,7 +458,7 @@
     width:${width}%;
     height:${height}%;
     overflow:hidden;
-    border-radius:8px;
+    border-radius:0;
     background:linear-gradient(to bottom, rgba(25,25,25,0.9), rgba(0,0,0,0.96));
     box-shadow:
       inset 0 0 0 1px rgba(255,255,255,0.05),
@@ -506,6 +517,10 @@
 
     document.getElementById("purpleRabbitBtn").addEventListener("click", function () {
       applySkin("purpleRabbit");
+    });
+
+    document.getElementById("new101Btn").addEventListener("click", function () {
+      applySkin("new101");
     });
 
     document.getElementById("debugBtn").addEventListener("click", function () {
