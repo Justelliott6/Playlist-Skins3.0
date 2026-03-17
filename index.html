@@ -4,16 +4,27 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Playlist Skins 3.0</title>
-
   <style>
     * {
       box-sizing: border-box;
     }
 
+    :root {
+      --bg: #050607;
+      --panel: #111317;
+      --panel-border: #262a32;
+      --text: #f5f5f5;
+      --muted: #a4abba;
+      --accent: #ffd82b;
+      --accent-text: #201400;
+      --heading: #9fb4ff;
+      --editor-green: rgba(0, 255, 102, 0.92);
+    }
+
     body {
       margin: 0;
-      background: #050607;
-      color: #f5f5f5;
+      background: var(--bg);
+      color: var(--text);
       font-family: Arial, Helvetica, sans-serif;
     }
 
@@ -26,7 +37,7 @@
       margin: 0;
       font-size: 2rem;
       letter-spacing: 2px;
-      color: #ffd82b;
+      color: var(--accent);
       text-transform: uppercase;
     }
 
@@ -44,12 +55,12 @@
     }
 
     .panel {
-      background: #111317;
-      border: 1px solid #262a32;
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
       border-radius: 16px;
       padding: 18px;
       margin-bottom: 20px;
-      box-shadow: 0 14px 30px rgba(0,0,0,0.38);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.38);
     }
 
     .panel h2 {
@@ -57,7 +68,7 @@
       font-size: 1.02rem;
       text-transform: uppercase;
       letter-spacing: 0.12em;
-      color: #9fb4ff;
+      color: var(--heading);
     }
 
     .two-col {
@@ -96,8 +107,8 @@
       appearance: none;
       border: none;
       border-radius: 999px;
-      background: #ffd82b;
-      color: #201400;
+      background: var(--accent);
+      color: var(--accent-text);
       font-weight: 700;
       font-size: 0.88rem;
       padding: 10px 16px;
@@ -116,6 +127,12 @@
       filter: brightness(1.06);
     }
 
+    button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      filter: none;
+    }
+
     .status-line {
       margin-top: 10px;
       color: #c9ced8;
@@ -126,6 +143,13 @@
       margin-top: 8px;
       color: #8f96a7;
       font-size: 0.82rem;
+      line-height: 1.45;
+    }
+
+    .warning-line {
+      margin-top: 10px;
+      color: #ffb8a3;
+      font-size: 0.84rem;
       line-height: 1.45;
     }
 
@@ -149,11 +173,11 @@
       position: absolute;
       overflow: hidden;
       border-radius: 0;
-      background: linear-gradient(to bottom, rgba(25,25,25,0.94), rgba(0,0,0,0.98));
+      background: linear-gradient(to bottom, rgba(25, 25, 25, 0.94), rgba(0, 0, 0, 0.98));
       box-shadow:
-        inset 0 0 0 1px rgba(255,255,255,0.04),
-        inset 0 4px 10px rgba(255,255,255,0.04),
-        inset 0 -10px 14px rgba(0,0,0,0.7);
+        inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+        inset 0 4px 10px rgba(255, 255, 255, 0.04),
+        inset 0 -10px 14px rgba(0, 0, 0, 0.7);
     }
 
     .boombox-screen iframe {
@@ -171,15 +195,15 @@
       pointer-events: none;
       background: linear-gradient(
         to bottom,
-        rgba(255,255,255,0.04) 0%,
-        rgba(255,255,255,0.015) 20%,
-        rgba(0,0,0,0) 48%,
-        rgba(0,0,0,0.14) 100%
+        rgba(255, 255, 255, 0.04) 0%,
+        rgba(255, 255, 255, 0.015) 20%,
+        rgba(0, 0, 0, 0) 48%,
+        rgba(0, 0, 0, 0.14) 100%
       );
     }
 
     .debug-outline {
-      outline: 2px dashed rgba(0, 255, 102, 0.95);
+      outline: 2px dashed var(--editor-green);
       outline-offset: -2px;
     }
 
@@ -197,7 +221,7 @@
       letter-spacing: 0.08em;
       cursor: pointer;
       user-select: none;
-      box-shadow: 0 0 10px rgba(0,0,0,0.28);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.28);
       text-transform: uppercase;
     }
 
@@ -206,7 +230,7 @@
       bottom: 6.5%;
       background: #d50000;
       color: #fff;
-      border: 1px solid rgba(255,255,255,0.22);
+      border: 1px solid rgba(255, 255, 255, 0.22);
     }
 
     .brand-spotify {
@@ -214,7 +238,7 @@
       bottom: 6.5%;
       background: #1db954;
       color: #08160c;
-      border: 1px solid rgba(255,255,255,0.18);
+      border: 1px solid rgba(255, 255, 255, 0.18);
     }
 
     .brand-facebook {
@@ -222,7 +246,7 @@
       bottom: 6.5%;
       background: #1877f2;
       color: #fff;
-      border: 1px solid rgba(255,255,255,0.18);
+      border: 1px solid rgba(255, 255, 255, 0.18);
     }
 
     .brand-badge:hover {
@@ -238,7 +262,6 @@
       border-radius: 10px;
       border: 1px solid #343842;
       padding: 10px 12px;
-      box-sizing: border-box;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
       font-size: 0.8rem;
       line-height: 1.5;
@@ -288,7 +311,6 @@
   </style>
 </head>
 <body>
-
   <header>
     <h1>Playlist Skins</h1>
     <p>Turn any media link into a retro boombox skin.</p>
@@ -323,13 +345,16 @@
         <button id="applyBtn" type="button">Apply Media</button>
         <button id="debugBtn" type="button">Toggle Tuner Outline</button>
         <button id="boomBoxBtn" type="button">BoomBox Skin</button>
-        <button id="purpleRabbitClassicBtn" type="button">Purple Rabbit Classic</button>
-        <button id="purpleRabbitNeonBtn" type="button">Purple Rabbit Neon</button>
+        <button id="purpleRabbitBtn" type="button" disabled>Purple Rabbit Pending</button>
         <a href="skin-editor.html" class="editor-link">Open Skin Editor</a>
       </div>
 
       <div class="hint">
-        Current image files: <strong>BoomBox.png</strong>, <strong>PurpleRabbit(3).png</strong>, <strong>PurpleRabbitNeon.png</strong>
+        Live approved skin file: <strong>BoomBox.png</strong>
+      </div>
+
+      <div class="warning-line">
+        Current Purple Rabbit art is intentionally not active here because it does not truly match the same outer frame and tuner placement as BoomBox.png yet.
       </div>
 
       <div class="status-line" id="statusLine">Ready.</div>
@@ -379,48 +404,22 @@
     const outputCode = document.getElementById("outputCode");
 
     const STORAGE_KEYS = {
-      skin: "playlistSkins_currentSkin",
       platform: "playlistSkins_platform",
       mediaUrl: "playlistSkins_mediaUrl",
       debug: "playlistSkins_debug"
     };
 
-    const skins = {
-      boombox: {
-        image: "./BoomBox.png",
-        label: "BoomBox.png",
-        pixels: {
-          left: 123,
-          right: 1216,
-          top: 201,
-          bottom: 301
-        }
-      },
-
-      purpleRabbitClassic: {
-        image: "./PurpleRabbit(3).png",
-        label: "PurpleRabbit(3).png",
-        pixels: {
-          left: 214,
-          right: 1214,
-          top: 208,
-          bottom: 401
-        }
-      },
-
-      purpleRabbitNeon: {
-        image: "./PurpleRabbitNeon.png",
-        label: "PurpleRabbitNeon.png",
-        pixels: {
-          left: 320,
-          right: 1280,
-          top: 120,
-          bottom: 340
-        }
+    const MASTER_SKIN = {
+      image: "./BoomBox.png",
+      label: "BoomBox.png",
+      pixels: {
+        left: 123,
+        right: 1216,
+        top: 201,
+        bottom: 301
       }
     };
 
-    let currentSkin = "boombox";
     let debugOn = false;
 
     function setStatus(text) {
@@ -428,21 +427,15 @@
     }
 
     function saveSettings() {
-      localStorage.setItem(STORAGE_KEYS.skin, currentSkin);
       localStorage.setItem(STORAGE_KEYS.platform, platformType.value);
       localStorage.setItem(STORAGE_KEYS.mediaUrl, mediaUrl.value.trim());
       localStorage.setItem(STORAGE_KEYS.debug, debugOn ? "1" : "0");
     }
 
     function restoreSettings() {
-      const savedSkin = localStorage.getItem(STORAGE_KEYS.skin);
       const savedPlatform = localStorage.getItem(STORAGE_KEYS.platform);
       const savedMediaUrl = localStorage.getItem(STORAGE_KEYS.mediaUrl);
       const savedDebug = localStorage.getItem(STORAGE_KEYS.debug);
-
-      if (savedSkin && skins[savedSkin]) {
-        currentSkin = savedSkin;
-      }
 
       if (savedPlatform) {
         platformType.value = savedPlatform;
@@ -510,16 +503,15 @@
     }
 
     function applyPixelBox() {
-      const skin = skins[currentSkin];
       const naturalWidth = boomboxImage.naturalWidth;
       const naturalHeight = boomboxImage.naturalHeight;
 
       if (!naturalWidth || !naturalHeight) return;
 
-      const left = (skin.pixels.left / naturalWidth) * 100;
-      const top = (skin.pixels.top / naturalHeight) * 100;
-      const width = ((skin.pixels.right - skin.pixels.left) / naturalWidth) * 100;
-      const height = ((skin.pixels.bottom - skin.pixels.top) / naturalHeight) * 100;
+      const left = (MASTER_SKIN.pixels.left / naturalWidth) * 100;
+      const top = (MASTER_SKIN.pixels.top / naturalHeight) * 100;
+      const width = ((MASTER_SKIN.pixels.right - MASTER_SKIN.pixels.left) / naturalWidth) * 100;
+      const height = ((MASTER_SKIN.pixels.bottom - MASTER_SKIN.pixels.top) / naturalHeight) * 100;
 
       boomboxScreen.style.left = left + "%";
       boomboxScreen.style.top = top + "%";
@@ -534,14 +526,13 @@
     }
 
     function buildEmbedCode(embedUrl) {
-      const skin = skins[currentSkin];
       const naturalWidth = boomboxImage.naturalWidth;
       const naturalHeight = boomboxImage.naturalHeight;
 
-      const left = ((skin.pixels.left / naturalWidth) * 100).toFixed(3);
-      const top = ((skin.pixels.top / naturalHeight) * 100).toFixed(3);
-      const width = (((skin.pixels.right - skin.pixels.left) / naturalWidth) * 100).toFixed(3);
-      const height = (((skin.pixels.bottom - skin.pixels.top) / naturalHeight) * 100).toFixed(3);
+      const left = ((MASTER_SKIN.pixels.left / naturalWidth) * 100).toFixed(3);
+      const top = ((MASTER_SKIN.pixels.top / naturalHeight) * 100).toFixed(3);
+      const width = (((MASTER_SKIN.pixels.right - MASTER_SKIN.pixels.left) / naturalWidth) * 100).toFixed(3);
+      const height = (((MASTER_SKIN.pixels.bottom - MASTER_SKIN.pixels.top) / naturalHeight) * 100).toFixed(3);
 
       return `<!-- Playlist Skins Widget -->
 <div style="
@@ -551,8 +542,8 @@
   margin:40px auto;
 ">
   <img
-    src="${skin.image}"
-    alt="${skin.label}"
+    src="${MASTER_SKIN.image}"
+    alt="${MASTER_SKIN.label}"
     style="display:block;width:100%;height:auto;border-radius:12px;"
   />
   <div style="
@@ -586,14 +577,11 @@
       outputCode.value = buildEmbedCode(mediaFrame.src);
     }
 
-    function applySkin(name) {
-      currentSkin = name;
-      const skin = skins[name];
-      boomboxImage.src = skin.image;
-      boomboxImage.alt = skin.label;
-      skinHint.textContent = "Current skin: " + skin.label;
-      setStatus("Skin loaded: " + skin.label);
-      saveSettings();
+    function applyMasterSkin() {
+      boomboxImage.src = MASTER_SKIN.image;
+      boomboxImage.alt = MASTER_SKIN.label;
+      skinHint.textContent = "Current skin: " + MASTER_SKIN.label;
+      setStatus("Skin loaded: " + MASTER_SKIN.label);
 
       if (boomboxImage.complete) {
         applyPixelBox();
@@ -622,15 +610,12 @@
     document.getElementById("applyBtn").addEventListener("click", applyMedia);
 
     document.getElementById("boomBoxBtn").addEventListener("click", function () {
-      applySkin("boombox");
+      applyMasterSkin();
+      saveSettings();
     });
 
-    document.getElementById("purpleRabbitClassicBtn").addEventListener("click", function () {
-      applySkin("purpleRabbitClassic");
-    });
-
-    document.getElementById("purpleRabbitNeonBtn").addEventListener("click", function () {
-      applySkin("purpleRabbitNeon");
+    document.getElementById("purpleRabbitBtn").addEventListener("click", function () {
+      setStatus("Purple Rabbit is pending rebuild to the BoomBox master frame.");
     });
 
     document.getElementById("debugBtn").addEventListener("click", function () {
@@ -663,10 +648,7 @@
       setStatus("Facebook cosmetic button ready. Real connect flow comes later.");
     });
 
-    platformType.addEventListener("change", function () {
-      saveSettings();
-    });
-
+    platformType.addEventListener("change", saveSettings);
     mediaUrl.addEventListener("change", saveSettings);
     mediaUrl.addEventListener("blur", saveSettings);
 
@@ -676,7 +658,7 @@
     });
 
     restoreSettings();
-    applySkin(currentSkin);
+    applyMasterSkin();
     applyMedia();
   </script>
 </body>
