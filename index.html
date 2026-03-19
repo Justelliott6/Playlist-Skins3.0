@@ -1,237 +1,601 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Playlist Skins 3.0</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    :root {
+      --bg: #050607;
+      --panel: #111317;
+      --panel-border: #262a32;
+      --text: #f5f5f5;
+      --muted: #a4abba;
+      --accent: #ffd82b;
+      --accent-text: #201400;
+      --heading: #9fb4ff;
+      --debug: rgba(255, 0, 0, 0.88);
+    }
 
-<title>Playlist Skins 3.0</title>
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
 
-<style>
+    header {
+      text-align: center;
+      padding: 24px 14px 10px;
+    }
 
-body{
-margin:0;
-padding:0;
-background:#050607;
-color:white;
-font-family:Arial, Helvetica, sans-serif;
-text-align:center;
-}
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+      letter-spacing: 2px;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
 
-header{
-padding:30px 10px;
-}
+    header p {
+      margin: 8px 0 0;
+      color: #c7ccd8;
+      font-size: 0.96rem;
+    }
 
-h1{
-font-size:2rem;
-letter-spacing:2px;
-}
+    main {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 14px 34px;
+    }
 
-.boombox-container{
-position:relative;
-width:95%;
-max-width:900px;
-margin:auto;
-}
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 20px;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.38);
+    }
 
-.boombox-image{
-width:100%;
-display:block;
-}
+    .panel h2 {
+      margin: 0 0 12px;
+      font-size: 1.02rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--heading);
+    }
 
-/* MAIN PLAYER (TOP BOX) */
-.boombox-screen{
-position:absolute;
-top:14.5%;
-left:10%;
-width:80%;
-height:12%;
-overflow:hidden;
-border-radius:6px;
-background:#000;
-}
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
 
-.boombox-screen iframe{
-width:100%;
-height:100%;
-border:0;
-}
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+      color: #d7d7d7;
+    }
 
-/* OVERLAY (glass effect) */
-.boombox-screen::after{
-content:"";
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-pointer-events:none;
-background:linear-gradient(to bottom, rgba(255,255,255,0.05), rgba(0,0,0,0.3));
-}
+    input[type="text"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #343842;
+      background: #07080b;
+      color: #f4f4f4;
+      font-size: 0.95rem;
+    }
 
-.player-controls{
-margin-top:20px;
-}
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
 
-button{
-background:#222;
-color:white;
-border:none;
-padding:10px 18px;
-border-radius:6px;
-cursor:pointer;
-font-size:14px;
-margin:4px;
-}
+    button {
+      appearance: none;
+      border: none;
+      border-radius: 999px;
+      background: var(--accent);
+      color: var(--accent-text);
+      font-weight: 700;
+      font-size: 0.88rem;
+      padding: 10px 16px;
+      min-height: 42px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+    }
 
-button:hover{
-background:#444;
-}
+    button:hover {
+      filter: brightness(1.06);
+    }
 
-/* FOLLOW BUTTONS */
-.follow{
-margin-top:40px;
-padding:20px;
-}
+    .copy-btn {
+      background: #3cf29b;
+      color: #02140c;
+    }
 
-.follow-icons{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:15px;
-}
+    .status-line {
+      margin-top: 10px;
+      color: #c9ced8;
+      font-size: 0.88rem;
+    }
 
-.follow-icons a{
-display:inline-block;
-}
+    .hint {
+      margin-top: 8px;
+      color: #8f96a7;
+      font-size: 0.82rem;
+      line-height: 1.45;
+    }
 
-.follow-icons img{
-width:42px;
-height:42px;
-transition:0.2s;
-}
+    .boombox-shell {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #000;
+    }
 
-.follow-icons img:hover{
-transform:scale(1.1);
-}
+    .boombox-image {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
 
-footer{
-margin-top:40px;
-font-size:12px;
-opacity:.6;
-}
+    .boombox-screen {
+      position: absolute;
+      overflow: hidden;
+      border-radius: 6px;
+      background: linear-gradient(to bottom, rgba(25,25,25,0.92), rgba(0,0,0,0.98));
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.05),
+        inset 0 5px 10px rgba(255,255,255,0.04),
+        inset 0 -10px 14px rgba(0,0,0,0.7);
+    }
 
-</style>
+    .boombox-screen iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+      background: transparent;
+    }
 
+    .boombox-screen::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.05) 0%,
+        rgba(255,255,255,0.015) 20%,
+        rgba(0,0,0,0) 48%,
+        rgba(0,0,0,0.14) 100%
+      );
+    }
+
+    .debug-outline {
+      outline: 2px dashed var(--debug);
+      outline-offset: -2px;
+    }
+
+    textarea {
+      min-height: 220px;
+      resize: vertical;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+
+    .code-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .follow-section {
+      text-align: center;
+    }
+
+    .follow-title {
+      margin: 0 0 16px;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--heading);
+    }
+
+    .follow-icons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .follow-icons a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 54px;
+      height: 54px;
+      border-radius: 999px;
+      background: #0a0d12;
+      border: 1px solid #2a313d;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+      text-decoration: none;
+    }
+
+    .follow-icons a:hover {
+      transform: scale(1.08);
+    }
+
+    .follow-icons img {
+      width: 28px;
+      height: 28px;
+      display: block;
+    }
+
+    @media (max-width: 700px) {
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+
+      header h1 {
+        font-size: 1.55rem;
+      }
+
+      .button-row {
+        flex-direction: column;
+      }
+
+      .button-row button {
+        width: 100%;
+      }
+
+      .follow-icons {
+        gap: 12px;
+      }
+
+      .follow-icons a {
+        width: 48px;
+        height: 48px;
+      }
+
+      .follow-icons img {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  </style>
 </head>
-
-
 <body>
 
+  <header>
+    <h1>Playlist Skins</h1>
+    <p>Turn any Spotify playlist into a retro boombox skin.</p>
+  </header>
 
-<header>
+  <main>
+    <section class="panel">
+      <h2>1. Drop your playlist or media link</h2>
 
-<h1>Playlist Skins</h1>
-<p>Custom Boombox Playlist Player</p>
+      <div class="two-col">
+        <div>
+          <label for="platformType">Platform</label>
+          <select id="platformType">
+            <option value="spotify">Spotify</option>
+            <option value="soundcloud">SoundCloud</option>
+            <option value="youtube">YouTube</option>
+            <option value="custom">Custom embed URL</option>
+          </select>
+        </div>
 
-</header>
+        <div>
+          <label for="mediaUrl">Media URL</label>
+          <input
+            id="mediaUrl"
+            type="text"
+            placeholder="Paste Spotify, SoundCloud, YouTube, or embed URL"
+          />
+        </div>
+      </div>
 
+      <div class="button-row">
+        <button id="applyBtn" type="button">Apply to Boombox</button>
+        <button id="debugBtn" type="button">Toggle Tuner Outline</button>
+        <button id="boomBoxBtn" type="button">BoomBox Skin</button>
+        <button id="purpleRabbitBtn" type="button">Purple Rabbit Skin</button>
+      </div>
 
-<div class="boombox-container">
+      <div class="hint">
+        Exact files in use: <strong>BoomBox.png</strong> and <strong>PurpleRabbit(3).png</strong>
+      </div>
 
-<img src="BoomBox.png" class="boombox-image">
+      <div class="status-line" id="statusLine">Ready.</div>
+    </section>
 
-<div class="boombox-screen">
+    <section class="panel">
+      <h2>2. Preview your skin</h2>
 
-<iframe
-id="player"
-src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M"
-allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
-</iframe>
+      <div class="boombox-shell">
+        <img id="boomboxImage" class="boombox-image" src="./BoomBox.png" alt="BoomBox.png" />
 
-</div>
+        <div id="boomboxScreen" class="boombox-screen">
+          <iframe
+            id="mediaFrame"
+            src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M?utm_source=generator"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy">
+          </iframe>
+        </div>
+      </div>
 
-</div>
+      <div class="hint" id="skinHint">Current skin: BoomBox.png</div>
+    </section>
 
+    <section class="panel">
+      <div class="code-label-row">
+        <span>3. Copy this HTML widget to use on your site</span>
+        <button class="copy-btn" id="copyBtn" type="button">Copy code</button>
+      </div>
+      <textarea id="outputCode" readonly></textarea>
+      <div class="hint">
+        Paste this into Webador, WordPress, or anywhere that allows HTML.
+      </div>
+    </section>
 
-<div class="player-controls">
+    <section class="panel follow-section">
+      <h2 class="follow-title">Follow Me</h2>
 
-<button onclick="spotify()">Spotify</button>
-<button onclick="youtube()">YouTube</button>
-<button onclick="radio()">Radio</button>
+      <div class="follow-icons">
+        <a href="https://www.facebook.com/JustElliott6" target="_blank" aria-label="Facebook Profile">
+          <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" />
+        </a>
 
-</div>
+        <a href="https://x.com/justelliott1970" target="_blank" aria-label="X">
+          <img src="https://cdn-icons-png.flaticon.com/512/5968/5968830.png" alt="X" />
+        </a>
 
+        <a href="https://www.youtube.com/@purplerabbitproductions" target="_blank" aria-label="YouTube">
+          <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube" />
+        </a>
 
-<!-- FOLLOW SECTION -->
-<div class="follow">
+        <a href="https://www.facebook.com/PurpleRabbit2023/" target="_blank" aria-label="Facebook Company Page">
+          <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook Company" />
+        </a>
 
-<h3 style="opacity:.7;letter-spacing:2px;">FOLLOW ME</h3>
+        <a href="https://unitedmasters.com/a/elliott-palmer" target="_blank" aria-label="UnitedMasters">
+          <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="UnitedMasters" />
+        </a>
 
-<div class="follow-icons">
+        <a href="https://share.google/43b6wTPVKf2N9ZPio" target="_blank" aria-label="Google Profile">
+          <img src="https://cdn-icons-png.flaticon.com/512/281/281764.png" alt="Google" />
+        </a>
 
-<a href="https://www.facebook.com/JustElliott6" target="_blank">
-<img src="https://cdn-icons-png.flaticon.com/512/733/733547.png">
-</a>
+        <a href="https://www.linkedin.com/in/elliott-palmer-16734520a/" target="_blank" aria-label="LinkedIn">
+          <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn" />
+        </a>
 
-<a href="https://x.com/justelliott1970" target="_blank">
-<img src="https://cdn-icons-png.flaticon.com/512/5968/5968830.png">
-</a>
+        <a href="https://github.com/Justelliott6/" target="_blank" aria-label="GitHub">
+          <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub" />
+        </a>
+      </div>
+    </section>
+  </main>
 
-<a href="https://www.youtube.com/@purplerabbitproductions" target="_blank">
-<img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png">
-</a>
+  <script>
+    const mediaUrl = document.getElementById("mediaUrl");
+    const platformType = document.getElementById("platformType");
+    const boomboxImage = document.getElementById("boomboxImage");
+    const boomboxScreen = document.getElementById("boomboxScreen");
+    const mediaFrame = document.getElementById("mediaFrame");
+    const statusLine = document.getElementById("statusLine");
+    const skinHint = document.getElementById("skinHint");
+    const outputCode = document.getElementById("outputCode");
 
-<a href="https://www.facebook.com/PurpleRabbit2023/" target="_blank">
-<img src="https://cdn-icons-png.flaticon.com/512/733/733547.png">
-</a>
+    const skins = {
+      boombox: {
+        image: "./BoomBox.png",
+        label: "BoomBox.png",
+        placement: {
+          top: "14%",
+          left: "10%",
+          width: "80%",
+          height: "12%"
+        }
+      },
+      purpleRabbit: {
+        image: "./PurpleRabbit(3).png",
+        label: "PurpleRabbit(3).png",
+        placement: {
+          top: "14%",
+          left: "10%",
+          width: "80%",
+          height: "12%"
+        }
+      }
+    };
 
-<a href="https://unitedmasters.com/a/elliott-palmer" target="_blank">
-<img src="https://cdn-icons-png.flaticon.com/512/25/25231.png">
-</a>
+    let currentSkin = "boombox";
+    let debugOn = false;
 
-<a href="https://share.google/43b6wTPVKf2N9ZPio" target="_blank">
-<img src="https://cdn-icons-png.flaticon.com/512/281/281764.png">
-</a>
+    function setStatus(text) {
+      statusLine.textContent = text;
+    }
 
-<a href="https://www.linkedin.com/in/elliott-palmer-16734520a/" target="_blank">
-<img src="https://cdn-icons-png.flaticon.com/512/174/174857.png">
-</a>
+    function toSpotifyEmbed(rawUrl) {
+      if (!rawUrl) return "";
+      let url = rawUrl.trim();
+      url = url.replace("open.spotify.com/playlist/", "open.spotify.com/embed/playlist/");
+      url = url.replace("open.spotify.com/album/", "open.spotify.com/embed/album/");
+      url = url.replace("open.spotify.com/track/", "open.spotify.com/embed/track/");
+      const qIndex = url.indexOf("?");
+      if (qIndex !== -1) url = url.substring(0, qIndex);
+      if (!url.includes("/embed/")) return "";
+      return url + "?utm_source=generator";
+    }
 
-<a href="https://github.com/Justelliott6/" target="_blank">
-<img src="https://cdn-icons-png.flaticon.com/512/25/25231.png">
-</a>
+    function toYouTubeEmbed(rawUrl) {
+      if (!rawUrl) return "";
+      let url = rawUrl.trim();
 
-</div>
+      if (url.includes("youtube.com/embed/")) return url;
 
-</div>
+      if (url.includes("youtu.be/")) {
+        const id = url.split("youtu.be/")[1].split("?")[0];
+        return "https://www.youtube.com/embed/" + id;
+      }
 
+      if (url.includes("youtube.com/watch?v=")) {
+        const id = url.split("watch?v=")[1].split("&")[0];
+        return "https://www.youtube.com/embed/" + id;
+      }
 
-<footer>
+      return "";
+    }
 
-Playlist Skins 3.0 • Purple Rabbit Productions
+    function toSoundCloudEmbed(rawUrl) {
+      if (!rawUrl) return "";
+      const url = rawUrl.trim();
 
-</footer>
+      if (url.includes("w.soundcloud.com/player/")) return url;
 
+      if (url.includes("soundcloud.com/")) {
+        return "https://w.soundcloud.com/player/?url=" + encodeURIComponent(url);
+      }
 
-<script>
+      return "";
+    }
 
-function spotify(){
-document.getElementById("player").src =
-"https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M"
-}
+    function toEmbedUrl(rawUrl, platform) {
+      if (platform === "spotify") return toSpotifyEmbed(rawUrl);
+      if (platform === "youtube") return toYouTubeEmbed(rawUrl);
+      if (platform === "soundcloud") return toSoundCloudEmbed(rawUrl);
+      if (platform === "custom") return rawUrl.trim();
+      return "";
+    }
 
-function youtube(){
-document.getElementById("player").src =
-"https://www.youtube.com/embed/dQw4w9WgXcQ"
-}
+    function applyPlacement() {
+      const skin = skins[currentSkin];
+      boomboxScreen.style.top = skin.placement.top;
+      boomboxScreen.style.left = skin.placement.left;
+      boomboxScreen.style.width = skin.placement.width;
+      boomboxScreen.style.height = skin.placement.height;
+    }
 
-function radio(){
-document.getElementById("player").src =
-"https://stream.zeno.fm/f3wvbbqmdg8uv"
-}
+    function buildEmbedCode(embedUrl) {
+      const skin = skins[currentSkin];
 
-</script>
+      return `<!-- Playlist Skins Boombox Widget -->
+<div style="
+  position:relative;
+  width:900px;
+  max-width:100%;
+  margin:40px auto;
+">
+  <img
+    src="${skin.image}"
+    alt="${skin.label}"
+    style="display:block;width:100%;height:auto;border-radius:12px;"
+  />
+  <div style="
+    position:absolute;
+    top:${skin.placement.top};
+    left:${skin.placement.left};
+    width:${skin.placement.width};
+    height:${skin.placement.height};
+    overflow:hidden;
+    border-radius:6px;
+    background:linear-gradient(to bottom, rgba(25,25,25,0.92), rgba(0,0,0,0.98));
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,0.05),
+      inset 0 5px 10px rgba(255,255,255,0.04),
+      inset 0 -10px 14px rgba(0,0,0,0.7);
+  ">
+    <iframe
+      src="${embedUrl}"
+      width="100%"
+      height="100%"
+      frameborder="0"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy"
+      style="border:0;display:block;background:transparent;"
+    ></iframe>
+  </div>
+</div>`;
+    }
 
+    function applySkin(name) {
+      currentSkin = name;
+      const skin = skins[name];
+      boomboxImage.src = skin.image;
+      boomboxImage.alt = skin.label;
+      skinHint.textContent = "Current skin: " + skin.label;
+      applyPlacement();
+      outputCode.value = buildEmbedCode(mediaFrame.src);
+      setStatus("Skin loaded: " + skin.label);
+    }
+
+    function applyMedia() {
+      const raw = mediaUrl.value.trim();
+      const platform = platformType.value;
+      const fallback = "https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M";
+      const embedUrl = toEmbedUrl(raw || fallback, platform);
+
+      if (!embedUrl) {
+        alert("That link does not match the selected platform.");
+        setStatus("Bad link for " + platform + ".");
+        return;
+      }
+
+      mediaFrame.src = embedUrl;
+      outputCode.value = buildEmbedCode(embedUrl);
+      setStatus("Embed loaded for " + platform + ".");
+    }
+
+    document.getElementById("applyBtn").addEventListener("click", applyMedia);
+
+    document.getElementById("boomBoxBtn").addEventListener("click", function () {
+      applySkin("boombox");
+    });
+
+    document.getElementById("purpleRabbitBtn").addEventListener("click", function () {
+      applySkin("purpleRabbit");
+    });
+
+    document.getElementById("debugBtn").addEventListener("click", function () {
+      debugOn = !debugOn;
+      boomboxScreen.classList.toggle("debug-outline", debugOn);
+      setStatus(debugOn ? "Tuner outline on." : "Tuner outline off.");
+    });
+
+    document.getElementById("copyBtn").addEventListener("click", function () {
+      outputCode.select();
+      document.execCommand("copy");
+      setStatus("Code copied.");
+      alert("Code copied.");
+    });
+
+    mediaUrl.value = "https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M";
+    applySkin("boombox");
+    applyMedia();
+  </script>
 </body>
 </html>
