@@ -3,22 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Playlist Skins 3.0</title>
+  <title>Playlist Skins Platform Beta</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     :root {
       --bg: #050607;
       --panel: #111317;
       --panel-border: #262a32;
       --text: #f5f5f5;
-      --muted: #a4abba;
-      --accent: #ffd82b;
-      --accent-text: #201400;
-      --heading: #9fb4ff;
-      --debug: rgba(255, 0, 0, 0.88);
+      --muted: #c7ccd8;
+      --soft: #8f96a7;
+      --gold: #ffd82b;
+      --blue: #9fb4ff;
+      --purpleA: #ff32d2;
+      --purpleB: #5be4ff;
+      --green: #1db954;
+      --dark: #07080b;
+      --ai: #7f7bff;
     }
 
     body {
@@ -30,26 +32,39 @@
 
     header {
       text-align: center;
-      padding: 24px 14px 10px;
+      padding: 22px 14px 10px;
+    }
+
+    .beta-tag {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--purpleA), var(--purpleB));
+      color: #111;
+      font-weight: 800;
+      font-size: 0.76rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
     }
 
     header h1 {
       margin: 0;
       font-size: 2rem;
       letter-spacing: 2px;
-      color: var(--accent);
+      color: var(--gold);
       text-transform: uppercase;
     }
 
     header p {
       margin: 8px 0 0;
-      color: #c7ccd8;
+      color: var(--muted);
       font-size: 0.96rem;
     }
 
     main {
       width: 100%;
-      max-width: 1100px;
+      max-width: 1220px;
       margin: 0 auto;
       padding: 0 14px 34px;
     }
@@ -60,7 +75,7 @@
       border-radius: 16px;
       padding: 18px;
       margin-bottom: 20px;
-      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.38);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.38);
     }
 
     .panel h2 {
@@ -68,7 +83,13 @@
       font-size: 1.02rem;
       text-transform: uppercase;
       letter-spacing: 0.12em;
-      color: var(--heading);
+      color: var(--blue);
+    }
+
+    .three-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
     }
 
     .two-col {
@@ -84,16 +105,21 @@
       color: #d7d7d7;
     }
 
-    input[type="text"],
-    select,
-    textarea {
+    input[type="text"], textarea {
       width: 100%;
       padding: 10px 12px;
       border-radius: 10px;
       border: 1px solid #343842;
-      background: #07080b;
+      background: var(--dark);
       color: #f4f4f4;
       font-size: 0.95rem;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 96px;
+      line-height: 1.45;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
     .button-row {
@@ -103,12 +129,13 @@
       margin-top: 14px;
     }
 
-    button {
+    button,
+    .editor-link {
       appearance: none;
       border: none;
       border-radius: 999px;
-      background: var(--accent);
-      color: var(--accent-text);
+      background: var(--gold);
+      color: #201400;
       font-weight: 700;
       font-size: 0.88rem;
       padding: 10px 16px;
@@ -116,15 +143,25 @@
       cursor: pointer;
       text-transform: uppercase;
       letter-spacing: 0.09em;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    button:hover {
+    button:hover,
+    .editor-link:hover {
       filter: brightness(1.06);
     }
 
     .copy-btn {
       background: #3cf29b;
       color: #02140c;
+    }
+
+    .ai-btn {
+      background: linear-gradient(90deg, var(--ai), #5be4ff);
+      color: #fff;
     }
 
     .status-line {
@@ -135,7 +172,7 @@
 
     .hint {
       margin-top: 8px;
-      color: #8f96a7;
+      color: var(--soft);
       font-size: 0.82rem;
       line-height: 1.45;
     }
@@ -143,11 +180,12 @@
     .boombox-shell {
       position: relative;
       width: 100%;
-      max-width: 900px;
+      max-width: 980px;
       margin: 0 auto;
       border-radius: 18px;
       overflow: hidden;
       background: #000;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.4);
     }
 
     .boombox-image {
@@ -156,18 +194,24 @@
       height: auto;
     }
 
-    .boombox-screen {
+    /* TOP TUNER = SPOTIFY */
+    .top-spotify-slot {
       position: absolute;
+      left: 11.6%;
+      top: 18.7%;
+      width: 76.1%;
+      height: 12.3%;
       overflow: hidden;
-      border-radius: 6px;
-      background: linear-gradient(to bottom, rgba(25,25,25,0.92), rgba(0,0,0,0.98));
+      border-radius: 16px;
+      background: #0e0e0e;
       box-shadow:
-        inset 0 0 0 1px rgba(255,255,255,0.05),
-        inset 0 5px 10px rgba(255,255,255,0.04),
-        inset 0 -10px 14px rgba(0,0,0,0.7);
+        inset 0 0 0 1px rgba(255,255,255,0.06),
+        inset 0 6px 16px rgba(255,255,255,0.05),
+        inset 0 -10px 16px rgba(0,0,0,0.65);
+      z-index: 2;
     }
 
-    .boombox-screen iframe {
+    .top-spotify-slot iframe {
       width: 100%;
       height: 100%;
       border: 0;
@@ -175,28 +219,317 @@
       background: transparent;
     }
 
-    .boombox-screen::after {
-      content: "";
+    /* MIDDLE SQUARE = YOUTUBE */
+    .middle-video-slot {
       position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background: linear-gradient(
-        to bottom,
-        rgba(255,255,255,0.05) 0%,
-        rgba(255,255,255,0.015) 20%,
-        rgba(0,0,0,0) 48%,
-        rgba(0,0,0,0.14) 100%
-      );
+      left: 15.7%;
+      top: 39.0%;
+      width: 68.4%;
+      height: 18.6%;
+      overflow: hidden;
+      background: #0b0b0b;
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.04),
+        inset 0 4px 10px rgba(255,255,255,0.03),
+        inset 0 -10px 16px rgba(0,0,0,0.75);
+      z-index: 2;
     }
 
-    .debug-outline {
-      outline: 2px dashed var(--debug);
-      outline-offset: -2px;
+    .middle-video-slot iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+      background: transparent;
     }
 
-    textarea {
-      min-height: 220px;
-      resize: vertical;
+    /* LOWER SLOT = FACEBOOK REEL */
+    .lower-media-slot {
+      position: absolute;
+      left: 24.9%;
+      top: 61.6%;
+      width: 50.5%;
+      height: 20%;
+      overflow: hidden;
+      background: #0d0d11;
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.05),
+        inset 0 6px 14px rgba(255,255,255,0.03),
+        inset 0 -12px 20px rgba(0,0,0,0.7);
+      z-index: 2;
+      touch-action: pan-x pan-y;
+    }
+
+    .lower-media-slot iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+      background: transparent;
+    }
+
+    .lower-fallback {
+      width: 100%;
+      height: 100%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 12px;
+      background:
+        linear-gradient(135deg, rgba(255,50,210,0.18), rgba(91,228,255,0.15)),
+        linear-gradient(to bottom, rgba(255,255,255,0.06), rgba(0,0,0,0.18)),
+        #0d0d11;
+      color: #d6dced;
+      font-size: 0.84rem;
+      line-height: 1.4;
+    }
+
+    /* SPEAKERS = 297x297 REFERENCE */
+    .speaker-fill {
+      position: absolute;
+      width: 24%;
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      box-shadow:
+        inset 0 0 0 2px rgba(255,255,255,0.08),
+        inset 0 0 26px rgba(0,0,0,0.55);
+      z-index: 2;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      user-select: none;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease;
+    }
+
+    .speaker-left {
+      left: 2.4%;
+      top: 57.8%;
+      background:
+        radial-gradient(circle at center, rgba(255,50,210,0.35), rgba(0,0,0,0.9)),
+        linear-gradient(135deg, #4e0d51, #071017);
+    }
+
+    .speaker-right {
+      right: 2.5%;
+      top: 57.8%;
+      background:
+        radial-gradient(circle at center, rgba(29,185,84,0.35), rgba(0,0,0,0.9)),
+        linear-gradient(135deg, #0d301b, #071017);
+    }
+
+    .speaker-inner {
+      width: 76%;
+      height: 76%;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.34);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 10px;
+      box-shadow: inset 0 0 18px rgba(0,0,0,0.5);
+    }
+
+    .speaker-inner img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .speaker-fallback {
+      color: white;
+      font-weight: 800;
+      font-size: 0.88rem;
+      line-height: 1.15;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* CORNER BADGES */
+    .top-corner-badge {
+      position: absolute;
+      z-index: 3;
+      width: 9.2%;
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.16), rgba(0,0,0,0.22));
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      user-select: none;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease;
+    }
+
+    .corner-left {
+      left: 2.5%;
+      top: 18.6%;
+    }
+
+    .corner-right {
+      right: 2.7%;
+      top: 18.5%;
+    }
+
+    .top-corner-badge img {
+      max-width: 75%;
+      max-height: 75%;
+      object-fit: contain;
+    }
+
+    /* SIDE BUTTONS */
+    .small-button {
+      position: absolute;
+      z-index: 3;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow:
+        inset 0 0 8px rgba(255,255,255,0.04),
+        inset 0 -8px 12px rgba(0,0,0,0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      background: #1b1b1d;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      user-select: none;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease;
+    }
+
+    .btn-left-top {
+      left: 0.6%;
+      top: 34.2%;
+      width: 5.8%;
+      aspect-ratio: 1 / 1;
+    }
+
+    .btn-left-mid {
+      left: 0.7%;
+      top: 41.6%;
+      width: 4.8%;
+      aspect-ratio: 1 / 1;
+    }
+
+    .btn-left-low {
+      left: 5.5%;
+      top: 40.1%;
+      width: 3.9%;
+      aspect-ratio: 1 / 1;
+    }
+
+    .btn-right-top {
+      right: 0.9%;
+      top: 34.3%;
+      width: 5.2%;
+      aspect-ratio: 1 / 1;
+    }
+
+    .btn-right-mid {
+      right: 1.0%;
+      top: 41.7%;
+      width: 4.6%;
+      aspect-ratio: 1 / 1;
+    }
+
+    /* SMART TOUCH */
+    button,
+    .editor-link {
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      user-select: none;
+    }
+
+    .small-button:active,
+    .speaker-fill:active,
+    .top-corner-badge:active,
+    button:active,
+    .editor-link:active {
+      transform: scale(0.96);
+      filter: brightness(1.08);
+    }
+
+    .touch-pressed {
+      transform: scale(0.95) !important;
+      filter: brightness(1.1) !important;
+      box-shadow:
+        0 0 0 2px rgba(255,255,255,0.10),
+        0 0 18px rgba(255,216,43,0.22),
+        inset 0 0 8px rgba(255,255,255,0.08),
+        inset 0 -8px 12px rgba(0,0,0,0.55) !important;
+    }
+
+    .touch-pulse {
+      animation: touchPulse 0.38s ease;
+    }
+
+    @keyframes touchPulse {
+      0% { transform: scale(1); }
+      35% { transform: scale(0.95); }
+      100% { transform: scale(1); }
+    }
+
+    .speaker-fill.touch-pressed,
+    .top-corner-badge.touch-pressed {
+      box-shadow:
+        0 0 18px rgba(255,216,43,0.18),
+        inset 0 0 0 2px rgba(255,255,255,0.10),
+        inset 0 0 26px rgba(0,0,0,0.55) !important;
+    }
+
+    /* AI PANEL */
+    .ai-panel {
+      margin-top: 18px;
+      border: 1px solid rgba(127,123,255,0.35);
+      background: linear-gradient(180deg, rgba(127,123,255,0.08), rgba(91,228,255,0.05));
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    .ai-panel h3 {
+      margin: 0 0 10px;
+      font-size: 0.95rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #d7d9ff;
+    }
+
+    .ai-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 14px;
+    }
+
+    .ai-note {
+      font-size: 0.8rem;
+      color: #bfc5d9;
+      line-height: 1.45;
+      margin-top: 8px;
+    }
+
+    .ai-output {
+      min-height: 160px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+      font-size: 0.8rem;
+      line-height: 1.45;
+    }
+
+    .code-output {
+      min-height: 240px;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
       font-size: 0.8rem;
       line-height: 1.5;
@@ -210,50 +543,16 @@
       margin-bottom: 6px;
     }
 
-    .follow-section {
-      text-align: center;
+    .mini-note {
+      font-size: 0.78rem;
+      color: var(--soft);
+      margin-top: 8px;
     }
 
-    .follow-title {
-      margin: 0 0 16px;
-      font-size: 1rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--heading);
-    }
-
-    .follow-icons {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 16px;
-    }
-
-    .follow-icons a {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 54px;
-      height: 54px;
-      border-radius: 999px;
-      background: #0a0d12;
-      border: 1px solid #2a313d;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.25);
-      text-decoration: none;
-    }
-
-    .follow-icons a:hover {
-      transform: scale(1.08);
-    }
-
-    .follow-icons img {
-      width: 28px;
-      height: 28px;
-      display: block;
-    }
-
-    @media (max-width: 700px) {
-      .two-col {
+    @media (max-width: 900px) {
+      .three-col,
+      .two-col,
+      .ai-grid {
         grid-template-columns: 1fr;
       }
 
@@ -265,176 +564,221 @@
         flex-direction: column;
       }
 
-      .button-row button {
+      .button-row button,
+      .button-row .editor-link {
         width: 100%;
+        min-height: 46px;
       }
 
-      .follow-icons {
-        gap: 12px;
+      .small-button {
+        font-size: 0.42rem;
+        min-width: 28px;
+        min-height: 28px;
       }
 
-      .follow-icons a {
-        width: 48px;
-        height: 48px;
+      .speaker-fallback {
+        font-size: 0.55rem;
       }
 
-      .follow-icons img {
-        width: 24px;
-        height: 24px;
+      .ad-copy,
+      .lower-fallback {
+        font-size: 0.58rem;
+        line-height: 1.25;
       }
     }
   </style>
 </head>
 <body>
-
   <header>
-    <h1>Playlist Skins</h1>
-    <p>Turn any Spotify playlist into a retro boombox skin.</p>
+    <div class="beta-tag">Beta Preview</div>
+    <h1>Playlist Skins Platform</h1>
+    <p>Connect media, launch skins, and build multi-platform embed dashboards.</p>
   </header>
 
   <main>
     <section class="panel">
-      <h2>1. Drop your playlist or media link</h2>
+      <h2>1. Platform Editor</h2>
 
-      <div class="two-col">
+      <div class="three-col">
         <div>
-          <label for="platformType">Platform</label>
-          <select id="platformType">
-            <option value="spotify">Spotify</option>
-            <option value="soundcloud">SoundCloud</option>
-            <option value="youtube">YouTube</option>
-            <option value="custom">Custom embed URL</option>
-          </select>
+          <label for="spotifyUrl">Spotify URL</label>
+          <input id="spotifyUrl" type="text" value="https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M" />
         </div>
 
         <div>
-          <label for="mediaUrl">Media URL</label>
-          <input
-            id="mediaUrl"
-            type="text"
-            placeholder="Paste Spotify, SoundCloud, YouTube, or embed URL"
-          />
+          <label for="youtubeEmbed">YouTube embed URL</label>
+          <input id="youtubeEmbed" type="text" value="https://www.youtube.com/embed/NQ3hbbwOnAw?si=TLf754Tvsuq7TQjE" />
+        </div>
+
+        <div>
+          <label for="skinEditorUrl">Skin Editor app URL</label>
+          <input id="skinEditorUrl" type="text" value="skin-editor.html" />
+        </div>
+      </div>
+
+      <div class="two-col" style="margin-top:14px;">
+        <div>
+          <label for="facebookEmbed">Facebook Reel plugin URL</label>
+          <input id="facebookEmbed" type="text" value="https://www.facebook.com/plugins/video.php?height=309&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F947458911156929%2F&show_text=false&width=560&t=0" />
+        </div>
+
+        <div>
+          <label for="lowerFallbackText">Lower slot fallback text</label>
+          <textarea id="lowerFallbackText">Facebook Reel or additional social media content appears here. If the embed does not load, this platform message stays visible.</textarea>
         </div>
       </div>
 
       <div class="button-row">
-        <button id="applyBtn" type="button">Apply to Boombox</button>
-        <button id="debugBtn" type="button">Toggle Tuner Outline</button>
-        <button id="boomBoxBtn" type="button">BoomBox Skin</button>
-        <button id="purpleRabbitBtn" type="button">Purple Rabbit Skin</button>
-      </div>
-
-      <div class="hint">
-        Exact files in use: <strong>BoomBox.png</strong> and <strong>PurpleRabbit(3).png</strong>
+        <button id="applyBtn" type="button">Apply Changes</button>
+        <a id="skinEditorLink" href="skin-editor.html" class="editor-link">Open Skin Editor</a>
       </div>
 
       <div class="status-line" id="statusLine">Ready.</div>
+      <div class="hint">
+        Required file: <strong>BoomBox.png</strong><br>
+        Optional files: <strong>purple-rabbit-circle.png</strong> and <strong>spotify-cover.png</strong>
+      </div>
+
+      <div class="ai-panel">
+        <h3>AI Assistant Panel</h3>
+        <div class="ai-grid">
+          <div>
+            <label for="aiPrompt">Ask the assistant</label>
+            <textarea id="aiPrompt" placeholder="Example: Make this feel like a country radio station with a stronger ad message."></textarea>
+
+            <div class="button-row">
+              <button id="aiSuggestBtn" class="ai-btn" type="button">Suggest Copy</button>
+              <button id="aiFixBtn" class="ai-btn" type="button">Fix Embed Links</button>
+              <button id="aiThemeBtn" class="ai-btn" type="button">Suggest Theme</button>
+            </div>
+
+            <div class="ai-note">
+              This is the editor-side AI panel UI. Right now it gives smart local suggestions. Later it can connect to your real AI backend.
+            </div>
+          </div>
+
+          <div>
+            <label for="aiOutput">AI output</label>
+            <textarea id="aiOutput" class="ai-output" readonly></textarea>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="panel">
-      <h2>2. Preview your skin</h2>
+      <h2>2. Platform Preview</h2>
 
       <div class="boombox-shell">
-        <img id="boomboxImage" class="boombox-image" src="./BoomBox.png" alt="BoomBox.png" />
+        <img class="boombox-image" src="./BoomBox.png" alt="BoomBox.png" />
 
-        <div id="boomboxScreen" class="boombox-screen">
+        <div class="top-spotify-slot">
           <iframe
-            id="mediaFrame"
-            src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M?utm_source=generator"
+            id="spotifyFrame"
+            src=""
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
             loading="lazy">
           </iframe>
         </div>
+
+        <div class="middle-video-slot">
+          <iframe
+            id="youtubeFrame"
+            src=""
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+            loading="lazy">
+          </iframe>
+        </div>
+
+        <div class="lower-media-slot" id="lowerMediaSlot">
+          <iframe
+            id="facebookFrame"
+            src=""
+            title="Facebook Reel"
+            scrolling="no"
+            allowfullscreen="true"
+            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+            loading="lazy">
+          </iframe>
+          <div class="lower-fallback" id="lowerFallbackBox">
+            Facebook Reel or additional social media content appears here. If the embed does not load, this platform message stays visible.
+          </div>
+        </div>
+
+        <div class="speaker-fill speaker-left" id="speakerLeft">
+          <div class="speaker-inner">
+            <img src="./purple-rabbit-circle.png" alt="Purple Rabbit" onerror="this.style.display='none';document.getElementById('leftSpeakerFallback').style.display='block';" />
+            <div id="leftSpeakerFallback" class="speaker-fallback" style="display:none;">Purple<br>Rabbit</div>
+          </div>
+        </div>
+
+        <div class="speaker-fill speaker-right" id="speakerRight">
+          <div class="speaker-inner">
+            <img src="./spotify-cover.png" alt="Spotify" onerror="this.style.display='none';document.getElementById('rightSpeakerFallback').style.display='block';" />
+            <div id="rightSpeakerFallback" class="speaker-fallback" style="display:none;">Spotify</div>
+          </div>
+        </div>
+
+        <div class="top-corner-badge corner-left" id="cornerLeft">
+          <img src="./purple-rabbit-circle.png" alt="Purple Rabbit" onerror="this.style.display='none';" />
+        </div>
+
+        <div class="top-corner-badge corner-right" id="cornerRight">
+          <img src="./spotify-cover.png" alt="Spotify" onerror="this.style.display='none';" />
+        </div>
+
+        <div class="small-button btn-left-top" id="btnEditor" title="Open editor">ED</div>
+        <div class="small-button btn-left-mid" id="btnYT" title="Focus YouTube">YT</div>
+        <div class="small-button btn-left-low" id="btnSP" title="Focus Spotify">SP</div>
+        <div class="small-button btn-right-top" id="btnCopy" title="Copy widget code">CP</div>
+        <div class="small-button btn-right-mid" id="btnAI" title="Focus AI panel">AI</div>
       </div>
 
-      <div class="hint" id="skinHint">Current skin: BoomBox.png</div>
+      <div class="hint">
+        Top tuner = Spotify. Big square = YouTube. Lower box = Facebook Reel or platform fallback.
+      </div>
     </section>
 
     <section class="panel">
       <div class="code-label-row">
-        <span>3. Copy this HTML widget to use on your site</span>
-        <button class="copy-btn" id="copyBtn" type="button">Copy code</button>
+        <h2 style="margin:0;">3. Export Widget Code</h2>
+        <button class="copy-btn" id="copyBtn" type="button">Copy Code</button>
       </div>
-      <textarea id="outputCode" readonly></textarea>
-      <div class="hint">
-        Paste this into Webador, WordPress, or anywhere that allows HTML.
-      </div>
-    </section>
-
-    <section class="panel follow-section">
-      <h2 class="follow-title">Follow Me</h2>
-
-      <div class="follow-icons">
-        <a href="https://www.facebook.com/JustElliott6" target="_blank" aria-label="Facebook Profile">
-          <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" />
-        </a>
-
-        <a href="https://x.com/justelliott1970" target="_blank" aria-label="X">
-          <img src="https://cdn-icons-png.flaticon.com/512/5968/5968830.png" alt="X" />
-        </a>
-
-        <a href="https://www.youtube.com/@purplerabbitproductions" target="_blank" aria-label="YouTube">
-          <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube" />
-        </a>
-
-        <a href="https://www.facebook.com/PurpleRabbit2023/" target="_blank" aria-label="Facebook Company Page">
-          <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook Company" />
-        </a>
-
-        <a href="https://unitedmasters.com/a/elliott-palmer" target="_blank" aria-label="UnitedMasters">
-          <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="UnitedMasters" />
-        </a>
-
-        <a href="https://share.google/43b6wTPVKf2N9ZPio" target="_blank" aria-label="Google Profile">
-          <img src="https://cdn-icons-png.flaticon.com/512/281/281764.png" alt="Google" />
-        </a>
-
-        <a href="https://www.linkedin.com/in/elliott-palmer-16734520a/" target="_blank" aria-label="LinkedIn">
-          <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn" />
-        </a>
-
-        <a href="https://github.com/Justelliott6/" target="_blank" aria-label="GitHub">
-          <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub" />
-        </a>
+      <textarea id="outputCode" class="code-output" readonly></textarea>
+      <div class="mini-note">
+        Export code uses local file paths. Later you can swap those for hosted URLs.
       </div>
     </section>
   </main>
 
   <script>
-    const mediaUrl = document.getElementById("mediaUrl");
-    const platformType = document.getElementById("platformType");
-    const boomboxImage = document.getElementById("boomboxImage");
-    const boomboxScreen = document.getElementById("boomboxScreen");
-    const mediaFrame = document.getElementById("mediaFrame");
+    const spotifyUrlInput = document.getElementById("spotifyUrl");
+    const youtubeEmbedInput = document.getElementById("youtubeEmbed");
+    const skinEditorUrlInput = document.getElementById("skinEditorUrl");
+    const facebookEmbedInput = document.getElementById("facebookEmbed");
+    const lowerFallbackTextInput = document.getElementById("lowerFallbackText");
+
+    const spotifyFrame = document.getElementById("spotifyFrame");
+    const youtubeFrame = document.getElementById("youtubeFrame");
+    const facebookFrame = document.getElementById("facebookFrame");
+    const lowerFallbackBox = document.getElementById("lowerFallbackBox");
+
     const statusLine = document.getElementById("statusLine");
-    const skinHint = document.getElementById("skinHint");
     const outputCode = document.getElementById("outputCode");
+    const skinEditorLink = document.getElementById("skinEditorLink");
 
-    const skins = {
-      boombox: {
-        image: "./BoomBox.png",
-        label: "BoomBox.png",
-        placement: {
-          top: "14%",
-          left: "10%",
-          width: "80%",
-          height: "12%"
-        }
-      },
-      purpleRabbit: {
-        image: "./PurpleRabbit(3).png",
-        label: "PurpleRabbit(3).png",
-        placement: {
-          top: "14%",
-          left: "10%",
-          width: "80%",
-          height: "12%"
-        }
-      }
-    };
+    const speakerLeft = document.getElementById("speakerLeft");
+    const speakerRight = document.getElementById("speakerRight");
+    const cornerLeft = document.getElementById("cornerLeft");
+    const cornerRight = document.getElementById("cornerRight");
 
-    let currentSkin = "boombox";
-    let debugOn = false;
+    const aiPrompt = document.getElementById("aiPrompt");
+    const aiOutput = document.getElementById("aiOutput");
+    const aiSuggestBtn = document.getElementById("aiSuggestBtn");
+    const aiFixBtn = document.getElementById("aiFixBtn");
+    const aiThemeBtn = document.getElementById("aiThemeBtn");
 
     function setStatus(text) {
       statusLine.textContent = text;
@@ -452,9 +796,9 @@
       return url + "?utm_source=generator";
     }
 
-    function toYouTubeEmbed(rawUrl) {
+    function normalizeYouTubeEmbed(rawUrl) {
       if (!rawUrl) return "";
-      let url = rawUrl.trim();
+      const url = rawUrl.trim();
 
       if (url.includes("youtube.com/embed/")) return url;
 
@@ -468,69 +812,75 @@
         return "https://www.youtube.com/embed/" + id;
       }
 
-      return "";
+      return url;
     }
 
-    function toSoundCloudEmbed(rawUrl) {
-      if (!rawUrl) return "";
+    function applyFacebookEmbed(rawUrl) {
       const url = rawUrl.trim();
 
-      if (url.includes("w.soundcloud.com/player/")) return url;
-
-      if (url.includes("soundcloud.com/")) {
-        return "https://w.soundcloud.com/player/?url=" + encodeURIComponent(url);
+      if (!url) {
+        facebookFrame.style.display = "none";
+        facebookFrame.src = "";
+        lowerFallbackBox.style.display = "flex";
+        lowerFallbackBox.textContent = lowerFallbackTextInput.value.trim() || "Additional platform content appears here.";
+        return;
       }
 
-      return "";
+      facebookFrame.src = url;
+      facebookFrame.style.display = "block";
+      lowerFallbackBox.style.display = "none";
     }
 
-    function toEmbedUrl(rawUrl, platform) {
-      if (platform === "spotify") return toSpotifyEmbed(rawUrl);
-      if (platform === "youtube") return toYouTubeEmbed(rawUrl);
-      if (platform === "soundcloud") return toSoundCloudEmbed(rawUrl);
-      if (platform === "custom") return rawUrl.trim();
-      return "";
-    }
+    function buildWidgetCode(spotifyEmbed, youtubeEmbed, facebookEmbed, fallbackText, editorUrl) {
+      const lowerSlotContent = facebookEmbed
+        ? `<iframe
+      src="${facebookEmbed}"
+      width="560"
+      height="309"
+      style="border:none;overflow:hidden;width:100%;height:100%;"
+      scrolling="no"
+      frameborder="0"
+      allowfullscreen="true"
+      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+      loading="lazy"
+    ></iframe>`
+        : `<div style="
+      width:100%;
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:12px;
+      background:
+        linear-gradient(135deg, rgba(255,50,210,0.18), rgba(91,228,255,0.15)),
+        linear-gradient(to bottom, rgba(255,255,255,0.06), rgba(0,0,0,0.18)),
+        #0d0d11;
+      color:#d6dced;
+      font-size:0.84rem;
+      line-height:1.4;
+    ">${fallbackText}</div>`;
 
-    function applyPlacement() {
-      const skin = skins[currentSkin];
-      boomboxScreen.style.top = skin.placement.top;
-      boomboxScreen.style.left = skin.placement.left;
-      boomboxScreen.style.width = skin.placement.width;
-      boomboxScreen.style.height = skin.placement.height;
-    }
+      return `<!-- Playlist Skins Platform Widget -->
+<div style="position:relative;width:980px;max-width:100%;margin:40px auto;overflow:hidden;border-radius:18px;background:#000;">
+  <img src="./BoomBox.png" alt="BoomBox.png" style="display:block;width:100%;height:auto;" />
 
-    function buildEmbedCode(embedUrl) {
-      const skin = skins[currentSkin];
-
-      return `<!-- Playlist Skins Boombox Widget -->
-<div style="
-  position:relative;
-  width:900px;
-  max-width:100%;
-  margin:40px auto;
-">
-  <img
-    src="${skin.image}"
-    alt="${skin.label}"
-    style="display:block;width:100%;height:auto;border-radius:12px;"
-  />
   <div style="
     position:absolute;
-    top:${skin.placement.top};
-    left:${skin.placement.left};
-    width:${skin.placement.width};
-    height:${skin.placement.height};
+    left:11.6%;
+    top:18.7%;
+    width:76.1%;
+    height:12.3%;
     overflow:hidden;
-    border-radius:6px;
-    background:linear-gradient(to bottom, rgba(25,25,25,0.92), rgba(0,0,0,0.98));
+    border-radius:16px;
+    background:#0e0e0e;
     box-shadow:
-      inset 0 0 0 1px rgba(255,255,255,0.05),
-      inset 0 5px 10px rgba(255,255,255,0.04),
-      inset 0 -10px 14px rgba(0,0,0,0.7);
+      inset 0 0 0 1px rgba(255,255,255,0.06),
+      inset 0 6px 16px rgba(255,255,255,0.05),
+      inset 0 -10px 16px rgba(0,0,0,0.65);
   ">
     <iframe
-      src="${embedUrl}"
+      src="${spotifyEmbed}"
       width="100%"
       height="100%"
       frameborder="0"
@@ -539,64 +889,286 @@
       style="border:0;display:block;background:transparent;"
     ></iframe>
   </div>
-</div>`;
+
+  <div style="
+    position:absolute;
+    left:15.7%;
+    top:39%;
+    width:68.4%;
+    height:18.6%;
+    overflow:hidden;
+    background:#0b0b0b;
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,0.04),
+      inset 0 4px 10px rgba(255,255,255,0.03),
+      inset 0 -10px 16px rgba(0,0,0,0.75);
+  ">
+    <iframe
+      src="${youtubeEmbed}"
+      width="100%"
+      height="100%"
+      frameborder="0"
+      title="YouTube video player"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allowfullscreen
+      loading="lazy"
+      style="border:0;display:block;background:transparent;"
+    ></iframe>
+  </div>
+
+  <div style="
+    position:absolute;
+    left:24.9%;
+    top:61.6%;
+    width:50.5%;
+    height:20%;
+    overflow:hidden;
+    background:#0d0d11;
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,0.05),
+      inset 0 6px 14px rgba(255,255,255,0.03),
+      inset 0 -12px 20px rgba(0,0,0,0.7);
+  ">
+    ${lowerSlotContent}
+  </div>
+</div>
+
+<a href="${editorUrl}" style="
+  display:inline-flex;
+  margin:16px auto 0;
+  padding:10px 16px;
+  border-radius:999px;
+  background:#ffd82b;
+  color:#201400;
+  font-weight:700;
+  font-size:0.88rem;
+  text-transform:uppercase;
+  letter-spacing:0.09em;
+  text-decoration:none;
+">Open Skin Editor</a>`;
     }
 
-    function applySkin(name) {
-      currentSkin = name;
-      const skin = skins[name];
-      boomboxImage.src = skin.image;
-      boomboxImage.alt = skin.label;
-      skinHint.textContent = "Current skin: " + skin.label;
-      applyPlacement();
-      outputCode.value = buildEmbedCode(mediaFrame.src);
-      setStatus("Skin loaded: " + skin.label);
+    function applyEditorChanges() {
+      const spotifyEmbed = toSpotifyEmbed(spotifyUrlInput.value);
+      const youtubeEmbed = normalizeYouTubeEmbed(youtubeEmbedInput.value);
+      const editorUrl = skinEditorUrlInput.value.trim() || "skin-editor.html";
+      const facebookEmbed = facebookEmbedInput.value.trim();
+      const fallbackText = lowerFallbackTextInput.value.trim() || "Additional platform content appears here.";
+
+      spotifyFrame.src = spotifyEmbed || "";
+      youtubeFrame.src = youtubeEmbed || "";
+      skinEditorLink.href = editorUrl;
+
+      applyFacebookEmbed(facebookEmbed);
+
+      outputCode.value = buildWidgetCode(
+        spotifyEmbed,
+        youtubeEmbed,
+        facebookEmbed,
+        fallbackText,
+        editorUrl
+      );
+
+      setStatus("Preview updated.");
     }
 
-    function applyMedia() {
-      const raw = mediaUrl.value.trim();
-      const platform = platformType.value;
-      const fallback = "https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M";
-      const embedUrl = toEmbedUrl(raw || fallback, platform);
-
-      if (!embedUrl) {
-        alert("That link does not match the selected platform.");
-        setStatus("Bad link for " + platform + ".");
+    async function copyCode() {
+      const text = outputCode.value;
+      if (!text) {
+        setStatus("Nothing to copy yet.");
         return;
       }
 
-      mediaFrame.src = embedUrl;
-      outputCode.value = buildEmbedCode(embedUrl);
-      setStatus("Embed loaded for " + platform + ".");
+      try {
+        await navigator.clipboard.writeText(text);
+        setStatus("Code copied.");
+        alert("Code copied.");
+      } catch (err) {
+        outputCode.select();
+        document.execCommand("copy");
+        setStatus("Code copied.");
+        alert("Code copied.");
+      }
     }
 
-    document.getElementById("applyBtn").addEventListener("click", applyMedia);
+    function addTouchFeedback(el, onTap) {
+      if (!el) return;
+      let moved = false;
 
-    document.getElementById("boomBoxBtn").addEventListener("click", function () {
-      applySkin("boombox");
+      el.addEventListener("touchstart", () => {
+        moved = false;
+        el.classList.add("touch-pressed");
+      }, { passive: true });
+
+      el.addEventListener("touchmove", () => {
+        moved = true;
+        el.classList.remove("touch-pressed");
+      }, { passive: true });
+
+      el.addEventListener("touchend", () => {
+        el.classList.remove("touch-pressed");
+        el.classList.add("touch-pulse");
+        setTimeout(() => el.classList.remove("touch-pulse"), 380);
+        if (!moved && typeof onTap === "function") onTap();
+      }, { passive: true });
+
+      el.addEventListener("touchcancel", () => {
+        el.classList.remove("touch-pressed");
+      }, { passive: true });
+
+      el.addEventListener("click", () => {
+        el.classList.add("touch-pulse");
+        setTimeout(() => el.classList.remove("touch-pulse"), 380);
+      });
+    }
+
+    addTouchFeedback(speakerLeft, () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      setStatus("Purple Rabbit speaker touched.");
     });
 
-    document.getElementById("purpleRabbitBtn").addEventListener("click", function () {
-      applySkin("purpleRabbit");
+    addTouchFeedback(speakerRight, () => {
+      spotifyUrlInput.focus();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      setStatus("Spotify speaker touched.");
     });
 
-    document.getElementById("debugBtn").addEventListener("click", function () {
-      debugOn = !debugOn;
-      boomboxScreen.classList.toggle("debug-outline", debugOn);
-      setStatus(debugOn ? "Tuner outline on." : "Tuner outline off.");
+    addTouchFeedback(cornerLeft, () => {
+      window.location.href = skinEditorLink.href;
     });
 
-    document.getElementById("copyBtn").addEventListener("click", function () {
-      outputCode.select();
-      document.execCommand("copy");
-      setStatus("Code copied.");
-      alert("Code copied.");
+    addTouchFeedback(cornerRight, () => {
+      spotifyUrlInput.focus();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      setStatus("Spotify badge touched.");
     });
 
-    mediaUrl.value = "https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M";
-    applySkin("boombox");
-    applyMedia();
+    function generateLocalAISuggestion() {
+      const prompt = aiPrompt.value.trim().toLowerCase();
+      const currentFallback = lowerFallbackTextInput.value.trim();
+
+      let headline = "GET NOTICED";
+      let sub = "BUY THIS SPOT";
+      let copy = currentFallback || "Promote your playlist, brand, video, or event inside this media skin platform.";
+
+      if (prompt.includes("country")) {
+        headline = "TURN IT UP";
+        sub = "COUNTRY SOUNDS HERE";
+        copy = "Bring your country playlists, live sessions, radio promos, and hometown brand into one skin.";
+      } else if (prompt.includes("rock")) {
+        headline = "LOUDER. HARDER.";
+        sub = "ROCK YOUR SLOT";
+        copy = "Push your station, band, sponsor, or playlist with a skin that hits like a real dashboard.";
+      } else if (prompt.includes("church") || prompt.includes("gospel")) {
+        headline = "SHARE THE MESSAGE";
+        sub = "REACH MORE HEARTS";
+        copy = "Connect worship media, sermons, music, and community updates inside one clean platform skin.";
+      } else if (prompt.includes("business") || prompt.includes("brand")) {
+        headline = "OWN THE SCREEN";
+        sub = "PUT YOUR BRAND HERE";
+        copy = "Feature your business, campaign, offer, or sponsor space across a polished media dashboard.";
+      }
+
+      aiOutput.value =
+`Suggested Billboard Copy
+Headline: ${headline}
+Subheadline: ${sub}
+Copy: ${copy}
+
+Suggested Use:
+- Spotify tuner for music or audio
+- YouTube square for video promo
+- Lower slot for social reel or branded message`;
+    }
+
+    function runLocalLinkFixer() {
+      const spotifyFixed = toSpotifyEmbed(spotifyUrlInput.value);
+      const youtubeFixed = normalizeYouTubeEmbed(youtubeEmbedInput.value);
+
+      if (spotifyFixed) spotifyUrlInput.value = spotifyFixed.replace("?utm_source=generator", "").replace("/embed/", "/");
+      if (youtubeFixed) youtubeEmbedInput.value = youtubeFixed;
+
+      aiOutput.value =
+`Embed Link Check
+Spotify embed preview: ${toSpotifyEmbed(spotifyUrlInput.value) || "Invalid"}
+YouTube embed preview: ${normalizeYouTubeEmbed(youtubeEmbedInput.value) || "Invalid"}
+Facebook plugin URL: ${facebookEmbedInput.value.trim() || "Empty"}
+
+Result:
+Fields checked and normalized where possible.`;
+      applyEditorChanges();
+    }
+
+    function suggestThemePreset() {
+      const prompt = aiPrompt.value.trim().toLowerCase();
+
+      let result = `Theme Suggestion
+Style: Platform Default
+Mood: Clean multi-platform dashboard
+Suggested Colors: Gold, black, soft neon accents
+Suggested Use: General creators and media brands`;
+
+      if (prompt.includes("country")) {
+        result = `Theme Suggestion
+Style: Country Broadcast
+Mood: Warm, bold, southern, classic radio
+Suggested Colors: Burnt gold, brown, black, cream
+Suggested Use: Country artists, church radio, local station skins`;
+      } else if (prompt.includes("rock")) {
+        result = `Theme Suggestion
+Style: Rock Station
+Mood: Loud, metallic, aggressive, stage-lit
+Suggested Colors: Red, black, steel gray, neon yellow
+Suggested Use: Rock radio, band promo, festival and sponsor skins`;
+      } else if (prompt.includes("retro") || prompt.includes("vintage")) {
+        result = `Theme Suggestion
+Style: Retro Dashboard
+Mood: Vintage stereo, warm lights, analog energy
+Suggested Colors: Amber, bronze, black, faded cream
+Suggested Use: Classic station skins, nostalgia media players`;
+      }
+
+      aiOutput.value = result;
+    }
+
+    aiSuggestBtn.addEventListener("click", generateLocalAISuggestion);
+    aiFixBtn.addEventListener("click", runLocalLinkFixer);
+    aiThemeBtn.addEventListener("click", suggestThemePreset);
+
+    document.getElementById("applyBtn").addEventListener("click", applyEditorChanges);
+    document.getElementById("copyBtn").addEventListener("click", copyCode);
+
+    document.getElementById("btnEditor").addEventListener("click", function () {
+      window.location.href = skinEditorLink.href;
+    });
+
+    document.getElementById("btnYT").addEventListener("click", function () {
+      youtubeEmbedInput.focus();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    document.getElementById("btnSP").addEventListener("click", function () {
+      spotifyUrlInput.focus();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    document.getElementById("btnCopy").addEventListener("click", copyCode);
+
+    document.getElementById("btnAI").addEventListener("click", function () {
+      aiPrompt.focus();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    applyEditorChanges();
   </script>
 </body>
-</html>
-
+</html><div style="
+  text-align:center;
+  font-size:11px;
+  color:#888;
+  margin-top:20px;
+  letter-spacing:1px;
+">
+  © 2026 Playlist Skins ™ | Purple Rabbit Productions ®
+</div>
